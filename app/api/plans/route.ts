@@ -13,10 +13,12 @@ export async function POST(request: Request) {
     typeof body.packageTarget === "string" ? body.packageTarget.trim() : "";
   const jdSummary =
     typeof body.jdSummary === "string" ? body.jdSummary.trim() : "";
-  const startDate = typeof body.startDate === "string" ? body.startDate : "";
-  const endDate = typeof body.endDate === "string" ? body.endDate : "";
+  const startDate = typeof body.startDate === "string" ? body.startDate : new Date().toISOString();
+  const endDate = typeof body.endDate === "string" ? body.endDate : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+  const timeline = typeof body.timeline === "string" ? body.timeline.trim() : "30";
+  const level = typeof body.level === "string" ? body.level.trim() : "intermediate";
 
-  if (!userId || !role || !company || !startDate || !endDate) {
+  if (!userId || !role || !company) {
     return NextResponse.json(
       { error: "Missing required fields." },
       { status: 400 }
@@ -32,23 +34,22 @@ export async function POST(request: Request) {
     endDate,
   });
 
-  const plan = await prisma.plan.create({
+  const roadmap = await prisma.roadmap.create({
     data: {
       userId,
       role,
       company,
-      packageTarget: packageTarget || null,
+      timeline: timeline || "30",
+      level: level || "intermediate",
       jdSummary: jdSummary || null,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
       milestones: { create: milestones },
       tasks: { create: tasks },
     },
     include: {
-      milestones: { orderBy: { weekIndex: "asc" } },
-      tasks: { orderBy: { weekIndex: "asc" } },
+      milestones: { orderBy: { week: "asc" } },
+      tasks: { orderBy: { order: "asc" } },
     },
   });
 
-  return NextResponse.json(plan);
+  return NextResponse.json(roadmap);
 }

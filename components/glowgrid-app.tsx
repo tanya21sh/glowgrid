@@ -7,6 +7,7 @@ import {
   buildWeekTargets,
   makeQuestionId,
   type PromptContext,
+  type WeekTarget,
 } from "@/lib/weekly-targets";
 
 type User = {
@@ -19,15 +20,15 @@ type Milestone = {
   id: string;
   title: string;
   description: string | null;
-  weekIndex: number | null;
+  week: number | null;
   dueDate: string | null;
 };
 
 type Task = {
   id: string;
   title: string;
-  track: string | null;
-  weekIndex: number | null;
+  category: string | null;
+  order: number | null;
   completed: boolean;
 };
 
@@ -148,8 +149,8 @@ export default function GlowgridApp() {
 
     const unique = new Set<string>();
     plan.tasks.forEach((task) => {
-      if (task.track) {
-        unique.add(task.track);
+      if (task.category) {
+        unique.add(task.category);
       }
     });
 
@@ -164,7 +165,7 @@ export default function GlowgridApp() {
     const milestones = plan.milestones;
 
     const weekList = milestones.map((milestone, index) => ({
-      week: milestone.weekIndex ?? index + 1,
+      week: milestone.week ?? index + 1,
       title: milestone.title,
       description: milestone.description ?? null,
       dueDate: milestone.dueDate ?? null,
@@ -278,14 +279,14 @@ export default function GlowgridApp() {
         id: createId(),
         title: milestone.title,
         description: milestone.description ?? null,
-        weekIndex: milestone.weekIndex ?? null,
+        week: milestone.week ?? null,
         dueDate: milestone.dueDate ? milestone.dueDate.toISOString() : null,
       })),
       tasks: tasks.map((task) => ({
         id: createId(),
         title: task.title,
-        track: task.track ?? null,
-        weekIndex: task.weekIndex ?? null,
+        category: task.category ?? null,
+        order: task.order ?? null,
         completed: false,
       })),
     };

@@ -1,8 +1,9 @@
-"use client";
+'use client';
+
+export const dynamic = 'force-dynamic';
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,8 +15,10 @@ import { Zap } from "lucide-react";
 
 export default function RoadmapGeneratorPage() {
   const router = useRouter();
-  const { user, isSignedIn, isLoaded } = useUser();
   const [loading, setLoading] = useState(false);
+  // Using guest user since Clerk is disabled
+  const userId = "guest-user";
+  
   const { register, handleSubmit, watch } = useForm({
     defaultValues: {
       company: "",
@@ -29,15 +32,13 @@ export default function RoadmapGeneratorPage() {
   const timeline = watch("timeline");
 
   const onSubmit = async (data: any) => {
-    if (!user?.id) return;
-
     setLoading(true);
     try {
       const response = await fetch("/api/roadmaps/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: user.id,
+          userId: userId,
           ...data,
         }),
       });
@@ -56,16 +57,6 @@ export default function RoadmapGeneratorPage() {
       setLoading(false);
     }
   };
-
-  if (!isLoaded || !isSignedIn) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin">
-          <Zap className="w-8 h-8 text-accent" />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background py-12">

@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 // import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from "@/lib/theme-context";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "PrepPilot - Your Personalized Placement Preparation OS",
+  title: "GlowGrid - Your Personalized Interview Preparation Platform",
   description:
-    "AI-powered interview preparation platform with personalized roadmaps, progress tracking, and expert guidance.",
+    "AI-powered interview prep with personalized roadmaps, progress tracking, and expert guidance.",
   icons: {
     icon: "/favicon.ico",
   },
@@ -21,8 +23,11 @@ export default function RootLayout({
     // <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className="bg-background text-foreground">
-          {children}
-          <Toaster position="bottom-right" />
+          <ThemeProvider>
+            {children}
+            <ThemeSwitcher />
+            <Toaster position="bottom-right" />
+          </ThemeProvider>
         </body>
       </html>
     // </ClerkProvider>

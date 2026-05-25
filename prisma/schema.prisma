@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -48,17 +48,17 @@ model Roadmap {
   role           String
   timeline       String          // 15, 30, 60, or custom (e.g., "45")
   level          String          // beginner, intermediate, advanced
-  jdSummary      String?         @db.Text
+  jdSummary      String?
   
   // Generated content
-  dsaRoadmap     String?         @db.Text
-  systemDesignRoadmap String?    @db.Text
-  fundamentalsRoadmap String?    @db.Text
-  behavioralRoadmap String?      @db.Text
-  dailyPlan      String?         @db.Text
+  dsaRoadmap     String?
+  systemDesignRoadmap String?
+  fundamentalsRoadmap String?
+  behavioralRoadmap String?
+  dailyPlan      String?
   
   // AI generation data
-  generatedContent String?       @db.Text // Full JSON of generated content
+  generatedContent String? // Full JSON of generated content
   
   // Status
   isActive       Boolean         @default(true)
@@ -78,7 +78,7 @@ model RoadmapTask {
   roadmap        Roadmap         @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
   
   title          String
-  description    String?         @db.Text
+  description    String?
   category       String          // DSA, SystemDesign, Fundamentals, Behavioral, MockInterview
   subcategory    String?         // e.g., Arrays, Database, OOP
   difficulty     String          @default("medium") // easy, medium, hard
@@ -87,7 +87,7 @@ model RoadmapTask {
   completed      Boolean         @default(false)
   completedAt    DateTime?
   
-  notes          String?         @db.Text
+  notes          String?
   order          Int             @default(0)
   
   createdAt      DateTime        @default(now())
@@ -101,7 +101,7 @@ model Milestone {
   
   week           Int
   title          String
-  description    String?         @db.Text
+  description    String?
   dueDate        DateTime?
   completed      Boolean         @default(false)
   
@@ -127,7 +127,7 @@ model DailyProgress {
   tasksCompleted Int             @default(0)
   currentStreak  Int             @default(0)
   
-  notes          String?         @db.Text
+  notes          String?
   mood           String?         // happy, neutral, stressed
   
   createdAt      DateTime        @default(now())
@@ -172,7 +172,7 @@ model MockInterview {
   difficulty     String          // easy, medium, hard
   duration       Int             // in minutes
   score          Float?          // 0-100
-  feedback       String?         @db.Text
+  feedback       String?
   recordingUrl   String?
   
   completedAt    DateTime?
@@ -185,9 +185,9 @@ model StudyNote {
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   title          String
-  content        String          @db.Text
+  content        String
   category       String          // DSA, SystemDesign, etc.
-  tags           String[]        @default([])
+  tags           String          @default("") // comma-separated tags
   
   isPinned       Boolean         @default(false)
   
@@ -202,7 +202,7 @@ model StudyNote {
 model Resource {
   id             String          @id @default(cuid())
   title          String
-  description    String?         @db.Text
+  description    String?
   url            String
   resourceType   String          // leetcode, youtube, article, blog, pdf
   category       String          // DSA, SystemDesign, Fundamentals, Behavioral
@@ -210,7 +210,7 @@ model Resource {
   duration       Int?            // in minutes
   rating         Float?          // 0-5
   
-  tags           String[]        @default([])
+  tags           String          @default("") // comma-separated tags
   
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt

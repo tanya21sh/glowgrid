@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
-import { useUser } from "@clerk/nextjs";
+export const dynamic = 'force-dynamic';
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,26 +9,20 @@ import { Button } from "@/components/ui/button";
 import { Zap, CheckCircle2, Circle } from "lucide-react";
 
 export default function TrackerPage() {
-  const { user, isSignedIn, isLoaded } = useUser();
   const router = useRouter();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push("/sign-in");
-    }
-  }, [isLoaded, isSignedIn, router]);
+  // Using a guest user for now since Clerk is disabled
+  const userId = "guest-user";
 
   useEffect(() => {
-    if (user?.id) {
-      fetchTasks();
-    }
-  }, [user?.id]);
+    fetchTasks();
+  }, []);
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch(`/api/tasks?userId=${user?.id}`);
+      const response = await fetch(`/api/tasks?userId=${userId}`);
       if (response.ok) {
         const data = await response.json();
         setTasks(data);
@@ -39,7 +34,7 @@ export default function TrackerPage() {
     }
   };
 
-  if (!isLoaded || !isSignedIn) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin">

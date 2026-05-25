@@ -1,5 +1,34 @@
 import { useState, useEffect, useCallback } from "react";
-import { IDailyProgress, IAnalytics } from "../types";
+
+// Types
+export interface IAnalytics {
+  id: string;
+  userId: string;
+  totalStudyHours: number;
+  totalProblems: number;
+  completionRate: number;
+  consistencyScore: number;
+  mostPracticedTopic: string | null;
+  weakestTopic: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IDailyProgress {
+  id: string;
+  userId: string;
+  date: string;
+  studyHours: number;
+  problemsSolved: number;
+  mockInterviews: number;
+  revisionSessions: number;
+  tasksCompleted: number;
+  currentStreak: number;
+  notes: string | null;
+  mood: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
 
 // Hook for fetching user analytics
 export function useAnalytics(userId: string) {

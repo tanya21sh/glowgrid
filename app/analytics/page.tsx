@@ -1,30 +1,12 @@
-"use client";
+'use client';
 
-import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+export const dynamic = 'force-dynamic';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Zap, TrendingUp, Target, Award } from "lucide-react";
 
 export default function AnalyticsPage() {
-  const { user, isSignedIn, isLoaded } = useUser();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push("/sign-in");
-    }
-  }, [isLoaded, isSignedIn, router]);
-
-  if (!isLoaded || !isSignedIn) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin">
-          <Zap className="w-8 h-8 text-accent" />
-        </div>
-      </div>
-    );
-  }
+  // Using guest user since Clerk is disabled
 
   return (
     <div className="min-h-screen bg-background py-12">

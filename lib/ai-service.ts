@@ -1,5 +1,18 @@
 import OpenAI from "openai";
-import { AIGeneratedContent } from "../types";
+
+export type AIGeneratedContent = {
+  dsaRoadmap?: string;
+  systemDesignRoadmap?: string;
+  fundamentalsRoadmap?: string;
+  behavioralRoadmap?: string;
+  dailyPlan?: string;
+  mockInterviewTopics?: string[];
+  studySchedule?: Array<{
+    week: number;
+    focus: string;
+    tasks: string[];
+  }>;
+};
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,

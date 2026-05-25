@@ -10,14 +10,14 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "User id is required." }, { status: 400 });
   }
 
-  const plan = await prisma.plan.findFirst({
+  const roadmap = await prisma.roadmap.findFirst({
     where: { userId },
     orderBy: { createdAt: "desc" },
     include: {
-      milestones: { orderBy: { weekIndex: "asc" } },
-      tasks: { orderBy: { weekIndex: "asc" } },
+      milestones: { orderBy: { week: "asc" } },
+      tasks: { orderBy: { order: "asc" } },
     },
   });
 
-  return NextResponse.json(plan);
+  return NextResponse.json(roadmap);
 }

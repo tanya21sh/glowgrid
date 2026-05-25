@@ -14,7 +14,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     return NextResponse.json({ error: "Task id is required." }, { status: 400 });
   }
 
-  const task = await prisma.task.update({
+  const task = await prisma.roadmapTask.update({
     where: { id: params.taskId },
     data: {
       completed,

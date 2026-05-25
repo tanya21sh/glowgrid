@@ -1,7 +1,9 @@
-"use client";
+// GlowGrid Landing Page - Gen-Z Modern Design
+// Modern, attractive, and highly functional landing page with glassmorphism effects
+'use client';
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import {
   Sparkles,
   Zap,
@@ -13,205 +15,235 @@ import {
   Users,
   BarChart3,
   BookOpen,
-  Flame,
-  Trophy,
   Rocket,
-  Star,
-} from "lucide-react";
+  Brain,
+  Shield,
+  Flame,
+} from 'lucide-react';
 
-// Gen Z style landing page with bold colors, gradients, and modern design
 export default function LandingPage() {
+  // Scroll to section handler
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Animated gradient background */}
-      <div className="fixed inset-0 -z-20">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl animate-blob" />
-        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-pink-600/30 rounded-full blur-3xl animate-blob animation-delay-2s" />
-        <div className="absolute -bottom-32 left-1/2 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl animate-blob animation-delay-4s" />
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-background/50 overflow-hidden">
+      {/* Animated background blobs */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-accent/20 rounded-full blur-3xl opacity-40 animate-blob" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl opacity-30 animate-blob animation-delay-2000" />
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl opacity-20 animate-blob animation-delay-4000" />
       </div>
 
-      {/* Navigation - Sleek and minimal */}
-      <nav className="fixed top-0 w-full z-50 bg-black/40 backdrop-blur-xl border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2 group cursor-pointer">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 via-pink-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-lg shadow-pink-500/50 group-hover:shadow-xl group-hover:shadow-purple-500/60 transition-all">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full z-50 bg-background/40 backdrop-blur-2xl border-b border-border/30">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex justify-between items-center">
+          {/* Logo */}
+          <div className="flex items-center gap-3 group">
+            <div className="w-11 h-11 bg-gradient-to-br from-accent via-pink-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
-              PrepPilot
-            </span>
+            <div className="flex flex-col">
+              <span className="text-2xl font-black bg-gradient-to-r from-accent via-pink-500 to-purple-500 bg-clip-text text-transparent">
+                GlowGrid
+              </span>
+              <span className="text-xs text-accent font-bold tracking-widest">BY STUDENTS FOR STUDENTS</span>
+            </div>
           </div>
 
-          <div className="flex gap-2 items-center">
-            <Link href="/sign-in">
-              <Button
-                variant="ghost"
-                className="text-white hover:bg-white/10 font-semibold"
+          {/* Navigation Links */}
+          <div className="hidden md:flex gap-1">
+            {[
+              { label: 'Features', id: 'features' },
+              { label: 'How It Works', id: 'how-it-works' },
+              { label: 'Pricing', id: 'pricing' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="px-4 py-2 text-foreground/80 hover:text-accent transition-colors font-medium"
               >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex gap-3 items-center">
+            <Link href="/sign-in">
+              <Button variant="ghost" className="text-base font-semibold">
                 Sign In
               </Button>
             </Link>
             <Link href="/sign-up">
-              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold shadow-lg shadow-purple-600/50 hover:shadow-xl hover:shadow-pink-600/60 transition-all border-0">
-                Get Started
+              <Button className="text-base font-semibold bg-gradient-to-r from-accent to-pink-500 hover:shadow-lg hover:shadow-accent/50 transition-all hover:scale-105">
+                Get Started Free
               </Button>
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section - Bold and energetic */}
-      <section className="pt-32 pb-24 px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto text-center">
+      {/* Hero Section */}
+      <section className="pt-40 pb-32 px-6 lg:px-8 relative">
+        <div className="max-w-6xl mx-auto text-center">
           {/* Badge */}
-          <div className="mb-8 inline-block">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-900/50 to-pink-900/50 rounded-full border border-purple-500/30 backdrop-blur-sm">
-              <Flame className="w-4 h-4 text-orange-400 animate-bounce" />
-              <span className="text-sm font-bold text-transparent bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text">
-                The AI Interview Prep that actually hits different
-              </span>
-            </div>
+          <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full border border-accent/30 backdrop-blur-sm hover:border-accent/60 transition-all">
+            <Zap className="w-4 h-4 text-accent animate-pulse" />
+            <span className="text-sm font-bold text-accent">✨ AI-Powered Interview Prep (BETA)</span>
           </div>
 
-          {/* Main heading */}
+          {/* Main Heading */}
           <h1 className="text-7xl md:text-8xl lg:text-9xl font-black mb-8 leading-tight">
-            <span className="block text-white">Stop Losing</span>
-            <span className="block bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
-              Job Interviews
+            <span className="bg-gradient-to-r from-accent via-pink-500 to-purple-500 bg-clip-text text-transparent block">
+              Land Your
+            </span>
+            <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 bg-clip-text text-transparent block">
+              Dream Job
             </span>
           </h1>
 
           {/* Subheading */}
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
-            Your AI mentor that actually understands what companies want. Get
-            personalized roadmaps, crush mock interviews, and land your dream job
-            in weeks, not months.
+          <p className="text-2xl md:text-3xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
+            Master any interview with{' '}
+            <span className="bg-gradient-to-r from-accent to-pink-500 bg-clip-text text-transparent font-bold">
+              AI-powered prep
+            </span>
+            . Personalized roadmaps, real-time feedback, and expert guidance—all in one place. 🚀
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex gap-4 justify-center flex-wrap mb-12">
+          <div className="flex gap-4 justify-center flex-wrap mb-16">
             <Link href="/sign-up">
-              <Button className="text-lg h-14 px-8 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-black shadow-xl shadow-purple-600/50 hover:shadow-2xl hover:scale-105 transition-all border-0 gap-2">
-                Start Your Prep
-                <ArrowRight className="w-5 h-5" />
+              <Button
+                size="lg"
+                className="text-lg h-14 px-8 bg-gradient-to-r from-accent to-pink-500 hover:shadow-2xl hover:shadow-accent/50 transition-all hover:scale-105 font-bold gap-2"
+              >
+                <Rocket className="w-5 h-5" />
+                Start Free Trial
               </Button>
             </Link>
             <Link href="/sign-in">
               <Button
+                size="lg"
                 variant="outline"
-                className="text-lg h-14 px-8 border-2 border-white/30 text-white hover:bg-white/5 font-bold transition-all hover:border-white/50"
+                className="text-lg h-14 px-8 border-2 hover:bg-background/50 transition-all font-bold"
               >
-                See How It Works
+                Watch Demo
               </Button>
             </Link>
           </div>
 
-          {/* Social proof */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-12 border-t border-white/10">
-            <div className="text-center">
-              <p className="text-3xl font-black bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-                10K+
-              </p>
-              <p className="text-sm text-gray-400 font-medium">
-                Interviews Crushed
-              </p>
-            </div>
-            <div className="hidden sm:block w-px h-12 bg-white/20" />
-            <div className="text-center">
-              <p className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
-                95%
-              </p>
-              <p className="text-sm text-gray-400 font-medium">Success Rate</p>
-            </div>
-            <div className="hidden sm:block w-px h-12 bg-white/20" />
-            <div className="text-center">
-              <p className="text-3xl font-black bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                4.9⭐
-              </p>
-              <p className="text-sm text-gray-400 font-medium">User Rating</p>
-            </div>
+          {/* Trust Badges */}
+          <div className="flex flex-col sm:flex-row gap-8 justify-center items-center pt-8 border-t border-border/30">
+            {[
+              { number: '10K+', label: 'Students Helped', icon: '🎓' },
+              { number: '95%', label: 'Success Rate', icon: '🎯' },
+              { number: '4.9★', label: 'User Rating', icon: '⭐' },
+            ].map((stat, i) => (
+              <div key={i} className="text-center group">
+                <p className="text-3xl font-black text-accent group-hover:scale-110 transition-transform">
+                  {stat.icon} {stat.number}
+                </p>
+                <p className="text-sm text-muted-foreground font-semibold mt-1">{stat.label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Features - Gen Z style cards with glassmorphism */}
-      <section className="py-24 px-6 lg:px-8">
+      {/* Features Section */}
+      <section id="features" className="py-32 px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-6xl md:text-7xl font-black mb-4 text-center">
-            Why PrepPilot{" "}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              hits
-            </span>
-          </h2>
-          <p className="text-center text-gray-400 text-xl mb-16">
-            Built for Gen Z. Made by people who actually know what's up.
-          </p>
+          {/* Section Header */}
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/10 rounded-full border border-purple-500/30 mb-6">
+              <Flame className="w-4 h-4 text-purple-400" />
+              <span className="text-sm font-bold text-purple-400">FEATURES</span>
+            </div>
+            <h2 className="text-6xl md:text-7xl font-black mb-6">
+              Why{' '}
+              <span className="bg-gradient-to-r from-accent to-pink-500 bg-clip-text text-transparent">
+                GlowGrid
+              </span>
+              <br />
+              is Different
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Everything you need to crush your interviews and land that offer 💪
+            </p>
+          </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Features Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               {
-                icon: Rocket,
-                title: "AI That Gets It",
-                desc: "Not your boomer chatbot. Real AI that understands modern interviews.",
-                color: "from-purple-600",
+                icon: Brain,
+                title: 'AI Roadmaps',
+                desc: 'Custom interview prep plans generated just for you',
+                gradient: 'from-blue-500 to-cyan-500',
               },
               {
                 icon: BarChart3,
-                title: "Live Stats",
-                desc: "Watch your skills level up in real-time with actual metrics.",
-                color: "from-pink-600",
-              },
-              {
-                icon: Flame,
-                title: "Roast Sessions",
-                desc: "Get honest feedback on your weak spots. Yeah, it's harsh. You'll love it.",
-                color: "from-orange-600",
-              },
-              {
-                icon: Trophy,
-                title: "W After W",
-                desc: "Join thousands of people who landed their dream jobs.",
-                color: "from-cyan-600",
-              },
-              {
-                icon: Code2,
-                title: "DSA Grind",
-                desc: "2000+ problems with instant explanations and solutions.",
-                color: "from-blue-600",
+                title: 'Live Analytics',
+                desc: 'Track progress with real-time insights & metrics',
+                gradient: 'from-purple-500 to-pink-500',
               },
               {
                 icon: Users,
-                title: "Community",
-                desc: "Vibe with other prep warriors and share strategies.",
-                color: "from-indigo-600",
+                title: 'Mock Interviews',
+                desc: 'AI-powered practice with instant feedback',
+                gradient: 'from-orange-500 to-red-500',
               },
               {
                 icon: BookOpen,
-                title: "System Design",
-                desc: "Master system design like you're already at Big Tech.",
-                color: "from-emerald-600",
+                title: 'Study Resources',
+                desc: 'Curated materials for all interview types',
+                gradient: 'from-green-500 to-emerald-500',
               },
               {
-                icon: Star,
-                title: "Behavioral",
-                desc: "Crush behavioral questions with confidence and authenticity.",
-                color: "from-yellow-600",
+                icon: Zap,
+                title: 'Smart Scheduling',
+                desc: 'AI-optimized study plan that adapts to you',
+                gradient: 'from-yellow-500 to-orange-500',
+              },
+              {
+                icon: TrendingUp,
+                title: 'Weekly Goals',
+                desc: 'Stay motivated with achievable milestones',
+                gradient: 'from-pink-500 to-red-500',
+              },
+              {
+                icon: Target,
+                title: 'Weak Area Focus',
+                desc: 'AI identifies gaps and recommends practice',
+                gradient: 'from-cyan-500 to-blue-500',
+              },
+              {
+                icon: CheckCircle2,
+                title: 'Interview Checklist',
+                desc: 'Complete prep with our verification system',
+                gradient: 'from-teal-500 to-green-500',
               },
             ].map((feature, idx) => (
               <div
                 key={idx}
-                className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${feature.color}/10 to-transparent backdrop-blur-xl border border-white/10 p-8 hover:border-white/30 transition-all duration-500 hover:shadow-2xl hover:shadow-${feature.color.split("-")[1]}-600/30 hover:scale-105`}
+                className="group relative overflow-hidden rounded-2xl bg-card/50 backdrop-blur-xl border border-border/50 p-6 hover:border-accent/50 transition-all duration-300 hover:bg-card hover:shadow-2xl hover:shadow-accent/20 hover:-translate-y-2"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                {/* Gradient overlay on hover */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity`} />
 
                 <div className="relative">
-                  <feature.icon className="w-12 h-12 mb-4 group-hover:scale-125 group-hover:rotate-12 transition-transform text-white" />
-                  <h3 className="text-xl font-black mb-2 text-white">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-gray-300 leading-relaxed">
-                    {feature.desc}
-                  </p>
+                  {/* Icon */}
+                  <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${feature.gradient} mb-4 group-hover:scale-110 transition-transform`}>
+                    <feature.icon className="w-6 h-6 text-white" />
+                  </div>
+
+                  {/* Title & Description */}
+                  <h3 className="text-lg font-black mb-2">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{feature.desc}</p>
                 </div>
               </div>
             ))}
@@ -219,136 +251,217 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How it works - Timeline style */}
-      <section className="py-24 px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-6xl md:text-7xl font-black text-center mb-4">
-            The{" "}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Glow-Up
-            </span>{" "}
-            Process
-          </h2>
-          <p className="text-center text-gray-400 text-lg mb-16">
-            5 steps to becoming unstoppable
-          </p>
-
-          <div className="space-y-8">
+      {/* Stats Section */}
+      <section className="py-32 px-6 lg:px-8 bg-gradient-to-r from-accent/5 via-transparent to-pink-500/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-16 text-center">
             {[
-              {
-                number: 1,
-                title: "Tell us your vibe",
-                desc: "Company, role, timeline. We get it.",
-                icon: "🎯",
-              },
-              {
-                number: 2,
-                title: "Get your AI mentor",
-                desc: "Custom roadmap that actually makes sense.",
-                icon: "🤖",
-              },
-              {
-                number: 3,
-                title: "Grind it out",
-                desc: "Follow your plan, crush daily goals, watch yourself improve.",
-                icon: "💪",
-              },
-              {
-                number: 4,
-                title: "Mock interview szn",
-                desc: "Practice with AI, get rated, iterate until you're unbeatable.",
-                icon: "🎬",
-              },
-              {
-                number: 5,
-                title: "Secure the bag",
-                desc: "Walk into your interview and absolutely destroy it.",
-                icon: "🚀",
-              },
-            ].map((step) => (
-              <div
-                key={step.number}
-                className="flex gap-8 items-start group hover:scale-102 transition-transform"
-              >
-                <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-3xl font-black text-white shadow-lg shadow-purple-600/50 group-hover:shadow-xl group-hover:shadow-pink-600/60 group-hover:scale-110 transition-all">
-                  {step.icon}
-                </div>
-                <div className="flex-1 pt-2">
-                  <h3 className="text-2xl font-black text-white mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-400 text-lg">{step.desc}</p>
-                </div>
+              { number: '2,400+', label: 'Interview Questions', icon: '📚' },
+              { number: '500+', label: 'Companies Covered', icon: '🏢' },
+              { number: '99.9%', label: 'Uptime Guarantee', icon: '⚡' },
+            ].map((stat, i) => (
+              <div key={i} className="group">
+                <p className="text-5xl md:text-6xl font-black text-accent mb-4 group-hover:scale-110 transition-transform">
+                  {stat.icon} {stat.number}
+                </p>
+                <p className="text-lg text-muted-foreground font-semibold">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Final CTA - Attention grabbing */}
-      <section className="py-24 px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-900/50 via-pink-900/30 to-black border border-white/20 p-12 md:p-20 text-center">
-            {/* Animated background blobs */}
-            <div className="absolute inset-0 -z-10">
-              <div className="absolute -top-20 -right-20 w-60 h-60 bg-purple-500/20 rounded-full blur-3xl" />
-              <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-pink-500/20 rounded-full blur-3xl" />
+      {/* How It Works */}
+      <section id="how-it-works" className="py-32 px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          {/* Section Header */}
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/30 mb-6">
+              <Rocket className="w-4 h-4 text-blue-400" />
+              <span className="text-sm font-bold text-blue-400">HOW IT WORKS</span>
             </div>
-
-            <h2 className="text-6xl md:text-7xl font-black mb-6 leading-tight">
-              Your Interview Glow-Up Starts{" "}
-              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Today
+            <h2 className="text-6xl md:text-7xl font-black mb-6">
+              5 Steps to{' '}
+              <span className="bg-gradient-to-r from-accent to-pink-500 bg-clip-text text-transparent">
+                Success
               </span>
             </h2>
-            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
-              No cap. PrepPilot has helped 10K+ people land their dream jobs. You
-              could be next.
-            </p>
+          </div>
 
-            <div className="flex gap-4 justify-center flex-wrap">
-              <Link href="/sign-up">
-                <Button className="text-lg h-14 px-8 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black shadow-xl shadow-purple-600/50 hover:shadow-2xl hover:scale-105 transition-all border-0 gap-2">
-                  Start Free
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
-              <Link href="/sign-in">
-                <Button
-                  variant="outline"
-                  className="text-lg h-14 px-8 border-2 border-white/30 text-white hover:bg-white/10 font-black transition-all"
-                >
-                  Demo
-                </Button>
-              </Link>
-            </div>
+          {/* Steps */}
+          <div className="space-y-6">
+            {[
+              {
+                num: 1,
+                title: 'Tell Us Your Target',
+                desc: 'Share your dream company, role, and experience level',
+                icon: '🎯',
+              },
+              {
+                num: 2,
+                title: 'Get AI Roadmap',
+                desc: 'We generate a personalized 12-week interview prep plan',
+                icon: '🗺️',
+              },
+              {
+                num: 3,
+                title: 'Study & Track',
+                desc: 'Follow daily goals with real-time progress analytics',
+                icon: '📊',
+              },
+              {
+                num: 4,
+                title: 'Mock Interviews',
+                desc: 'Practice with AI and get detailed feedback instantly',
+                icon: '💬',
+              },
+              {
+                num: 5,
+                title: 'Land The Job! 🎉',
+                desc: 'Go into your interview fully prepared and confident',
+                icon: '✨',
+              },
+            ].map((step, idx) => (
+              <div key={idx} className="flex gap-6 items-start group">
+                {/* Step Number */}
+                <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-accent to-pink-500 flex items-center justify-center text-white font-black text-2xl group-hover:scale-110 transition-transform shadow-lg">
+                  {step.num}
+                </div>
 
-            <p className="text-sm text-gray-400 mt-8 font-medium">
-              7-day free trial • No credit card • No BS
-            </p>
+                {/* Step Content */}
+                <div className="flex-1 pt-2">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h3 className="text-2xl font-black">{step.title}</h3>
+                    <span className="text-2xl">{step.icon}</span>
+                  </div>
+                  <p className="text-muted-foreground text-lg leading-relaxed">{step.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer - Minimal */}
-      <footer className="border-t border-white/10 py-12 px-6 lg:px-8">
+      {/* Final CTA */}
+      <section className="py-32 px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          {/* CTA Card */}
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-accent/30 via-pink-500/20 to-purple-500/10 border-2 border-accent/30 p-16 text-center group hover:border-accent/60 transition-all">
+            {/* Animated background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+            <div className="relative">
+              <h2 className="text-6xl md:text-7xl font-black mb-6">
+                Ready to{' '}
+                <span className="bg-gradient-to-r from-accent to-pink-500 bg-clip-text text-transparent">
+                  Glow
+                </span>
+                ?
+              </h2>
+              <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
+                Join thousands of students who landed their dream jobs with GlowGrid. Your success story starts here. 🚀
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex gap-4 justify-center flex-wrap">
+                <Link href="/sign-up">
+                  <Button
+                    size="lg"
+                    className="text-lg h-14 px-10 bg-white text-accent hover:bg-gray-100 font-black transition-all hover:scale-105 gap-2"
+                  >
+                    <Sparkles className="w-5 h-5" />
+                    Start Your Free Trial
+                  </Button>
+                </Link>
+                <Link href="/sign-in">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="text-lg h-14 px-10 border-2 border-white text-white hover:bg-white/10 font-black"
+                  >
+                    Sign In
+                  </Button>
+                </Link>
+              </div>
+
+              <p className="text-sm text-muted-foreground mt-8 font-medium">
+                ✨ No credit card required • 7-day free trial • Cancel anytime
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-border/20 py-16 px-6 lg:px-8 bg-gradient-to-t from-background/80 to-transparent">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-purple-400" />
-              <span className="font-black text-lg">PrepPilot © 2024</span>
+          {/* Footer Grid */}
+          <div className="grid md:grid-cols-5 gap-12 mb-12">
+            {/* Brand */}
+            <div className="md:col-span-1">
+              <div className="flex items-center gap-2 mb-4">
+                <Sparkles className="w-6 h-6 text-accent" />
+                <span className="font-black text-xl">GlowGrid</span>
+              </div>
+              <p className="text-muted-foreground text-sm">
+                Your personal AI interview prep coach. Always ready, always learning.
+              </p>
             </div>
 
-            <div className="flex gap-8 text-gray-400 text-sm font-medium">
-              <Link href="#" className="hover:text-white transition-colors">
-                Twitter
-              </Link>
-              <Link href="#" className="hover:text-white transition-colors">
-                Discord
-              </Link>
-              <Link href="#" className="hover:text-white transition-colors">
-                Privacy
-              </Link>
+            {/* Links */}
+            {[
+              {
+                title: 'Product',
+                links: ['Features', 'Pricing', 'FAQ', 'Blog'],
+              },
+              {
+                title: 'Company',
+                links: ['About', 'Contact', 'Press', 'Careers'],
+              },
+              {
+                title: 'Resources',
+                links: ['Docs', 'API', 'Community', 'Support'],
+              },
+              {
+                title: 'Legal',
+                links: ['Privacy', 'Terms', 'Cookie Policy', 'Security'],
+              },
+            ].map((section) => (
+              <div key={section.title}>
+                <h4 className="font-black mb-4 text-foreground">{section.title}</h4>
+                <ul className="space-y-2">
+                  {section.links.map((link) => (
+                    <li key={link}>
+                      <Link
+                        href="#"
+                        className="text-muted-foreground hover:text-accent transition-colors text-sm"
+                      >
+                        {link}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom Footer */}
+          <div className="border-t border-border/30 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-muted-foreground text-sm">
+                © 2024 GlowGrid. Built with ❤️ by students, for students.
+              </p>
+              <div className="flex gap-4">
+                {['Twitter', 'Discord', 'GitHub'].map((social) => (
+                  <Link
+                    key={social}
+                    href="#"
+                    className="text-muted-foreground hover:text-accent transition-colors text-sm font-medium"
+                  >
+                    {social}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>

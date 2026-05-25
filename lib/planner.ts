@@ -90,23 +90,24 @@ export function buildPlan(input: PlanInput) {
   const stages = STAGE_TEMPLATES.slice(0, stageCount);
 
   const milestones = stages.map((stage, index) => {
-    const weekIndex = Math.floor((index / stageCount) * totalWeeks) + 1;
-    const dueDate = clampDate(addDays(start, weekIndex * 7 - 1), end);
+    const week = Math.floor((index / stageCount) * totalWeeks) + 1;
+    const dueDate = clampDate(addDays(start, week * 7 - 1), end);
 
     return {
       title: stage.title,
       description: stage.description,
-      weekIndex,
+      week,
       dueDate,
     };
   });
 
   const tasks = stages.flatMap((stage, index) => {
-    const weekIndex = Math.floor((index / stageCount) * totalWeeks) + 1;
-    return stage.tasks.map((task) => ({
+    const week = Math.floor((index / stageCount) * totalWeeks) + 1;
+    return stage.tasks.map((task, taskIndex) => ({
       title: task.title,
-      track: task.track,
-      weekIndex,
+      description: task.track,
+      category: task.track,
+      order: taskIndex,
     }));
   });
 

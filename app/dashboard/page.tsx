@@ -1,8 +1,8 @@
-"use client";
+// Dynamic rendering to avoid Clerk context errors during static export
+'use client';
 
-import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+export const dynamic = 'force-dynamic';
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,24 +10,11 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Plus, Zap, TrendingUp } from "lucide-react";
 
 export default function DashboardPage() {
-  const { user, isSignedIn, isLoaded } = useUser();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push("/sign-in");
-    }
-  }, [isLoaded, isSignedIn, router]);
-
-  if (!isLoaded || !isSignedIn) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin">
-          <Zap className="w-8 h-8 text-accent" />
-        </div>
-      </div>
-    );
-  }
+  // Using guest user since Clerk is disabled
+  const user = {
+    firstName: "Guest",
+    email: "guest@glowgrid.dev",
+  };
 
   return (
     <div className="min-h-screen bg-background">
