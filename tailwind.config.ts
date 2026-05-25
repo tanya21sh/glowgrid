@@ -6,6 +6,60 @@ const config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    // Background colors
+    "bg-slate-950",
+    "bg-slate-900",
+    "bg-slate-800",
+    "bg-slate-700",
+    "bg-slate-600",
+    // Text colors
+    "text-slate-100",
+    "text-slate-200",
+    "text-slate-50",
+    // Gradient colors
+    "from-slate-950",
+    "via-slate-900",
+    "to-slate-800",
+    // Borders
+    "border-slate-700",
+    "border-slate-600",
+    // Animation classes
+    "animate-blob",
+    "animation-delay-2000",
+    "animation-delay-4000",
+    "animation-delay-6000",
+    // Gradients from Tailwind
+    "bg-gradient-to-b",
+    "bg-gradient-to-br",
+    "bg-gradient-to-tr",
+    "bg-gradient-to-tl",
+    "bg-gradient-to-bl",
+    "bg-gradient-to-r",
+    "from-accent",
+    "to-pink-500",
+    "via-pink-500",
+    "from-blue-500",
+    "to-cyan-500",
+    "via-cyan-400",
+    "to-teal-400",
+    "from-purple-500",
+    "to-purple-500",
+    // Hover and opacity
+    "hover:bg-accent",
+    "hover:text-accent",
+    "hover:text-accent-foreground",
+    "hover:shadow-lg",
+    "hover:shadow-xl",
+    "hover:scale-110",
+    "hover:scale-105",
+    "active:scale-95",
+    "opacity-50",
+    "opacity-40",
+    "opacity-30",
+    "opacity-35",
+    "opacity-20",
+  ],
   theme: {
     extend: {
       colors: {

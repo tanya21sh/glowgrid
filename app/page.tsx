@@ -1,297 +1,141 @@
-// GlowGrid Landing Page - Gen-Z Modern Design
-// Modern, attractive, and highly functional landing page with glassmorphism effects
 'use client';
 
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import {
-  Sparkles,
-  Zap,
-  TrendingUp,
-  Target,
-  CheckCircle2,
-  ArrowRight,
-  Code2,
-  Users,
-  BarChart3,
-  BookOpen,
-  Rocket,
-  Brain,
-  Shield,
-  Flame,
-} from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function LandingPage() {
-  // Scroll to section handler
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const [scrolled, setScrolled] = useState(false);
+  const [activeFeature, setActiveFeature] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const features = [
+    { icon: '🎯', title: 'AI Roadmaps', desc: 'Custom interview prep plans generated just for you' },
+    { icon: '📊', title: 'Live Analytics', desc: 'Track progress with real-time insights & metrics' },
+    { icon: '💬', title: 'Mock Interviews', desc: 'AI-powered practice with instant feedback' },
+    { icon: '📚', title: 'Study Resources', desc: 'Curated materials for all interview types' },
+    { icon: '⏰', title: 'Smart Scheduling', desc: 'AI-optimized study plan that adapts to you' },
+    { icon: '🎁', title: 'Weekly Goals', desc: 'Stay motivated with achievable milestones' },
+    { icon: '🔍', title: 'Weak Areas', desc: 'AI identifies gaps and recommends practice' },
+    { icon: '✅', title: 'Interview Checklist', desc: 'Complete prep with our verification system' },
+  ];
+
+  const pricingPlans = [
+    { name: 'Starter', price: 'Free', features: ['Basic roadmap generation', '5 mock interviews/month', 'Community access'] },
+    { name: 'Pro', price: '$29/mo', features: ['Unlimited roadmaps', 'Unlimited mock interviews', 'Priority support', 'Advanced analytics', 'PDF export'], highlight: true },
+    { name: 'Enterprise', price: 'Custom', features: ['Everything in Pro', 'Team management', 'Dedicated support', 'Custom integrations'] },
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 overflow-hidden relative">
-      {/* Animated background blobs - Enhanced */}
-      <div className="fixed inset-0 -z-10 overflow-hidden">
-        {/* Main accent blob */}
-        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-gradient-to-br from-accent/30 to-pink-500/20 rounded-full blur-3xl opacity-50 animate-blob" />
-        
-        {/* Secondary pink blob */}
-        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-gradient-to-tr from-pink-500/25 to-purple-500/15 rounded-full blur-3xl opacity-40 animate-blob animation-delay-2000" />
-        
-        {/* Tertiary blue blob */}
-        <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] bg-gradient-to-tl from-blue-500/15 via-cyan-400/10 to-teal-400/5 rounded-full blur-3xl opacity-30 animate-blob animation-delay-4000" />
-        
-        {/* Purple accent blob */}
-        <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-gradient-to-bl from-purple-500/20 to-pink-500/10 rounded-full blur-3xl opacity-35 animate-blob animation-delay-6000" />
-        
-        {/* Grid background overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-[size:50px_50px] opacity-20" />
+    <div style={{ backgroundColor: '#0f172a', color: '#f1f5f9', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' }}>
+      {/* Animated Background */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: -1 }}>
+        <div style={{
+          position: 'absolute', top: '-40%', right: '-40%', width: '600px', height: '600px',
+          background: 'radial-gradient(circle, rgba(244, 63, 94, 0.1) 0%, transparent 70%)',
+          borderRadius: '50%', filter: 'blur(80px)', animation: 'float 20s ease-in-out infinite'
+        }} />
+        <div style={{
+          position: 'absolute', bottom: '-40%', left: '-40%', width: '500px', height: '500px',
+          background: 'radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%)',
+          borderRadius: '50%', filter: 'blur(80px)', animation: 'float 20s ease-in-out infinite 5s'
+        }} />
       </div>
 
+      <style>{`
+        @keyframes float { 0%, 100% { transform: translateY(0px) translateX(0px); } 50% { transform: translateY(-60px) translateX(30px); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: slideUp 0.8s ease-out; }
+      `}</style>
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-slate-900/40 backdrop-blur-2xl border-b border-slate-700/30">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex justify-between items-center">
-          {/* Logo */}
-          <div className="flex items-center gap-3 group">
-            <div className="w-11 h-11 bg-gradient-to-br from-accent via-pink-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-              <Sparkles className="w-6 h-6 text-white" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-black bg-gradient-to-r from-accent via-pink-500 to-purple-500 bg-clip-text text-transparent">
-                GlowGrid
-              </span>
-              <span className="text-xs text-accent font-bold tracking-widest">BY STUDENTS FOR STUDENTS</span>
-            </div>
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 40,
+        background: scrolled ? 'rgba(15, 23, 42, 0.95)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(10px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(148, 163, 184, 0.1)' : 'none',
+        padding: '20px 40px',
+        transition: 'all 0.3s'
+      }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ fontSize: '28px', fontWeight: 'bold', background: 'linear-gradient(135deg, #f43f5e, #a855f7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            ✨ GlowGrid
           </div>
-
-          {/* Navigation Links */}
-          <div className="hidden md:flex gap-1">
-            {[
-              { label: 'Features', id: 'features' },
-              { label: 'How It Works', id: 'how-it-works' },
-              { label: 'Pricing', id: 'pricing' },
-            ].map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="px-4 py-2 text-foreground/80 hover:text-accent transition-colors font-medium"
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="flex gap-3 items-center">
-            <Link href="/sign-in">
-              <Button variant="ghost" className="text-base font-semibold">
-                Sign In
-              </Button>
-            </Link>
-            <Link href="/sign-up">
-              <Button className="text-base font-semibold bg-gradient-to-r from-accent to-pink-500 hover:shadow-lg hover:shadow-accent/50 transition-all hover:scale-105">
-                Get Started Free
-              </Button>
-            </Link>
+          <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
+            <a href="#features" style={{ color: '#cbd5e1', textDecoration: 'none', cursor: 'pointer', transition: '0.3s' }} onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#f43f5e'} onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#cbd5e1'}>Features</a>
+            <a href="#pricing" style={{ color: '#cbd5e1', textDecoration: 'none', cursor: 'pointer', transition: '0.3s' }} onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#f43f5e'} onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#cbd5e1'}>Pricing</a>
+            <button style={{ background: 'linear-gradient(135deg, #f43f5e, #ec4899)', border: 'none', color: 'white', padding: '10px 24px', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', transition: '0.3s', boxShadow: '0 4px 15px rgba(244, 63, 94, 0.3)' }} onMouseEnter={(e) => (e.target as HTMLElement).style.transform = 'translateY(-2px)'} onMouseLeave={(e) => (e.target as HTMLElement).style.transform = 'translateY(0)'}>
+              Get Started
+            </button>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-40 pb-32 px-6 lg:px-8 relative">
-        <div className="max-w-6xl mx-auto text-center">
-          {/* Badge */}
-          <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full border border-accent/30 backdrop-blur-sm hover:border-accent/60 transition-all">
-            <Zap className="w-4 h-4 text-accent animate-pulse" />
-            <span className="text-sm font-bold text-accent">✨ AI-Powered Interview Prep (BETA)</span>
+      <section style={{ paddingTop: '160px', paddingBottom: '120px', maxWidth: '1200px', margin: '0 auto', padding: '160px 40px 120px' }}>
+        <div className="animate-in" style={{ textAlign: 'center' }}>
+          <div style={{ display: 'inline-block', background: 'rgba(244, 63, 94, 0.1)', border: '1px solid rgba(244, 63, 94, 0.3)', borderRadius: '50px', padding: '12px 24px', marginBottom: '30px', fontSize: '14px', color: '#f43f5e', fontWeight: '600' }}>
+            🚀 AI-Powered Interview Prep (BETA)
           </div>
-
-          {/* Main Heading */}
-          <h1 className="text-7xl md:text-8xl lg:text-9xl font-black mb-8 leading-tight">
-            <span className="bg-gradient-to-r from-accent via-pink-500 to-purple-500 bg-clip-text text-transparent block">
-              Land Your
-            </span>
-            <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 bg-clip-text text-transparent block">
-              Dream Job
-            </span>
+          <h1 style={{ fontSize: '72px', fontWeight: '900', lineHeight: '1.2', marginBottom: '30px', background: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #a855f7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            Land Your Dream Job
           </h1>
-
-          {/* Subheading */}
-          <p className="text-2xl md:text-3xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
-            Master any interview with{' '}
-            <span className="bg-gradient-to-r from-accent to-pink-500 bg-clip-text text-transparent font-bold">
-              AI-powered prep
-            </span>
-            . Personalized roadmaps, real-time feedback, and expert guidance—all in one place. 🚀
+          <p style={{ fontSize: '20px', color: '#cbd5e1', maxWidth: '700px', margin: '0 auto 50px', lineHeight: '1.8' }}>
+            Master any interview with AI-powered prep. Personalized roadmaps, real-time feedback, and expert guidance—all in one place.
           </p>
-
-          {/* CTA Buttons */}
-          <div className="flex gap-4 justify-center flex-wrap mb-16">
-            <Link href="/sign-up">
-              <Button
-                size="lg"
-                className="text-lg h-14 px-8 bg-gradient-to-r from-accent to-pink-500 hover:shadow-2xl hover:shadow-accent/50 transition-all hover:scale-105 font-bold gap-2"
-              >
-                <Rocket className="w-5 h-5" />
-                Start Free Trial
-              </Button>
-            </Link>
-            <Link href="/sign-in">
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-lg h-14 px-8 border-2 hover:bg-background/50 transition-all font-bold"
-              >
-                Watch Demo
-              </Button>
-            </Link>
+          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button style={{ background: 'linear-gradient(135deg, #f43f5e, #ec4899)', border: 'none', color: 'white', padding: '16px 40px', borderRadius: '8px', fontSize: '16px', fontWeight: '700', cursor: 'pointer', transition: '0.3s', boxShadow: '0 20px 40px rgba(244, 63, 94, 0.3)' }} onMouseEnter={(e) => (e.target as HTMLElement).style.transform = 'translateY(-3px)'} onMouseLeave={(e) => (e.target as HTMLElement).style.transform = 'translateY(0)'}>
+              Start Free Trial
+            </button>
+            <button style={{ background: 'transparent', border: '2px solid #f43f5e', color: '#f43f5e', padding: '14px 40px', borderRadius: '8px', fontSize: '16px', fontWeight: '700', cursor: 'pointer', transition: '0.3s' }} onMouseEnter={(e) => { (e.target as HTMLElement).style.background = 'rgba(244, 63, 94, 0.1)'; (e.target as HTMLElement).style.transform = 'translateY(-3px)'; }} onMouseLeave={(e) => { (e.target as HTMLElement).style.background = 'transparent'; (e.target as HTMLElement).style.transform = 'translateY(0)'; }}>
+              Watch Demo
+            </button>
           </div>
+        </div>
 
-          {/* Trust Badges */}
-          <div className="flex flex-col sm:flex-row gap-8 justify-center items-center pt-8 border-t border-border/30">
-            {[
-              { number: '10K+', label: 'Students Helped', icon: '🎓' },
-              { number: '95%', label: 'Success Rate', icon: '🎯' },
-              { number: '4.9★', label: 'User Rating', icon: '⭐' },
-            ].map((stat, i) => (
-              <div key={i} className="text-center group">
-                <p className="text-3xl font-black text-accent group-hover:scale-110 transition-transform">
-                  {stat.icon} {stat.number}
-                </p>
-                <p className="text-sm text-muted-foreground font-semibold mt-1">{stat.label}</p>
-              </div>
-            ))}
-          </div>
+        {/* Stats */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '40px', maxWidth: '800px', margin: '100px auto 0', paddingTop: '60px', borderTop: '1px solid rgba(148, 163, 184, 0.1)' }}>
+          {[{ num: '10K+', label: 'Students' }, { num: '95%', label: 'Success Rate' }, { num: '4.9★', label: 'Rating' }].map((stat, i) => (
+            <div key={i} style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '36px', fontWeight: '900', color: '#f43f5e', marginBottom: '8px' }}>{stat.num}</div>
+              <div style={{ fontSize: '14px', color: '#94a3b8' }}>{stat.label}</div>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-32 px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/10 rounded-full border border-purple-500/30 mb-6">
-              <Flame className="w-4 h-4 text-purple-400" />
-              <span className="text-sm font-bold text-purple-400">FEATURES</span>
-            </div>
-            <h2 className="text-6xl md:text-7xl font-black mb-6">
-              Why{' '}
-              <span className="bg-gradient-to-r from-accent to-pink-500 bg-clip-text text-transparent">
-                GlowGrid
-              </span>
-              <br />
-              is Different
+      <section id="features" style={{ padding: '120px 40px', background: 'linear-gradient(180deg, transparent, rgba(244, 63, 94, 0.05))' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+            <h2 style={{ fontSize: '48px', fontWeight: '900', marginBottom: '20px', background: 'linear-gradient(135deg, #f43f5e, #a855f7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              Why GlowGrid is Different
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p style={{ fontSize: '18px', color: '#cbd5e1', maxWidth: '600px', margin: '0 auto' }}>
               Everything you need to crush your interviews and land that offer 💪
             </p>
           </div>
 
-          {/* Features Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              {
-                icon: Brain,
-                title: 'AI Roadmaps',
-                desc: 'Custom interview prep plans generated just for you',
-                gradient: 'from-blue-500 to-cyan-500',
-                bgGradient: 'bg-gradient-to-br from-blue-500/5 to-cyan-500/5',
-              },
-              {
-                icon: BarChart3,
-                title: 'Live Analytics',
-                desc: 'Track progress with real-time insights & metrics',
-                gradient: 'from-purple-500 to-pink-500',
-                bgGradient: 'bg-gradient-to-br from-purple-500/5 to-pink-500/5',
-              },
-              {
-                icon: Users,
-                title: 'Mock Interviews',
-                desc: 'AI-powered practice with instant feedback',
-                gradient: 'from-orange-500 to-red-500',
-                bgGradient: 'bg-gradient-to-br from-orange-500/5 to-red-500/5',
-              },
-              {
-                icon: BookOpen,
-                title: 'Study Resources',
-                desc: 'Curated materials for all interview types',
-                gradient: 'from-green-500 to-emerald-500',
-                bgGradient: 'bg-gradient-to-br from-green-500/5 to-emerald-500/5',
-              },
-              {
-                icon: Zap,
-                title: 'Smart Scheduling',
-                desc: 'AI-optimized study plan that adapts to you',
-                gradient: 'from-yellow-500 to-orange-500',
-                bgGradient: 'bg-gradient-to-br from-yellow-500/5 to-orange-500/5',
-              },
-              {
-                icon: TrendingUp,
-                title: 'Weekly Goals',
-                desc: 'Stay motivated with achievable milestones',
-                gradient: 'from-pink-500 to-red-500',
-                bgGradient: 'bg-gradient-to-br from-pink-500/5 to-red-500/5',
-              },
-              {
-                icon: Target,
-                title: 'Weak Area Focus',
-                desc: 'AI identifies gaps and recommends practice',
-                gradient: 'from-cyan-500 to-blue-500',
-                bgGradient: 'bg-gradient-to-br from-cyan-500/5 to-blue-500/5',
-              },
-              {
-                icon: CheckCircle2,
-                title: 'Interview Checklist',
-                desc: 'Complete prep with our verification system',
-                gradient: 'from-teal-500 to-green-500',
-                bgGradient: 'bg-gradient-to-br from-teal-500/5 to-green-500/5',
-              },
-            ].map((feature, idx) => (
-              <div
-                key={idx}
-                className={`group relative overflow-hidden rounded-2xl ${feature.bgGradient} backdrop-blur-xl border-2 border-transparent hover:border-accent/60 p-6 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/30 hover:-translate-y-3 cursor-pointer`}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px' }}>
+            {features.map((feature, i) => (
+              <div key={i}
+                style={{
+                  background: activeFeature === i ? 'rgba(244, 63, 94, 0.1)' : 'rgba(30, 41, 59, 0.6)',
+                  border: activeFeature === i ? '1px solid rgba(244, 63, 94, 0.5)' : '1px solid rgba(148, 163, 184, 0.1)',
+                  borderRadius: '12px',
+                  padding: '30px',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  backdropFilter: 'blur(10px)'
+                }}
+                onMouseEnter={() => setActiveFeature(i)}
               >
-                {/* Gradient border on hover */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{backgroundImage: `linear-gradient(135deg, var(--tw-gradient-stops))`}} />
-
-                {/* Enhanced gradient overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-[0.08] transition-all duration-500 rounded-2xl`} />
-
-                <div className="relative z-10">
-                  {/* Icon with enhanced animation */}
-                  <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${feature.gradient} mb-5 group-hover:scale-125 group-hover:shadow-lg group-hover:shadow-current/50 transition-all duration-500 text-white`}>
-                    <feature.icon className="w-6 h-6" />
-                  </div>
-
-                  {/* Title & Description */}
-                  <h3 className="text-lg font-black mb-3 group-hover:text-accent transition-colors">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed group-hover:text-foreground/70 transition-colors">{feature.desc}</p>
-                  
-                  {/* Arrow indicator on hover */}
-                  <div className="mt-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                    <ArrowRight className="w-4 h-4 text-accent" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-32 px-6 lg:px-8 bg-gradient-to-r from-accent/5 via-transparent to-pink-500/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-16 text-center">
-            {[
-              { number: '2,400+', label: 'Interview Questions', icon: '📚' },
-              { number: '500+', label: 'Companies Covered', icon: '🏢' },
-              { number: '99.9%', label: 'Uptime Guarantee', icon: '⚡' },
-            ].map((stat, i) => (
-              <div key={i} className="group">
-                <p className="text-5xl md:text-6xl font-black text-accent mb-4 group-hover:scale-110 transition-transform">
-                  {stat.icon} {stat.number}
-                </p>
-                <p className="text-lg text-muted-foreground font-semibold">{stat.label}</p>
+                <div style={{ fontSize: '40px', marginBottom: '15px' }}>{feature.icon}</div>
+                <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '10px', color: '#f1f5f9' }}>{feature.title}</h3>
+                <p style={{ color: '#cbd5e1', fontSize: '14px', lineHeight: '1.6' }}>{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -299,197 +143,123 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="py-32 px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/30 mb-6">
-              <Rocket className="w-4 h-4 text-blue-400" />
-              <span className="text-sm font-bold text-blue-400">HOW IT WORKS</span>
-            </div>
-            <h2 className="text-6xl md:text-7xl font-black mb-6">
-              5 Steps to{' '}
-              <span className="bg-gradient-to-r from-accent to-pink-500 bg-clip-text text-transparent">
-                Success
-              </span>
-            </h2>
-          </div>
+      <section style={{ padding: '120px 40px', background: 'rgba(15, 23, 42, 0.5)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '48px', fontWeight: '900', marginBottom: '80px', textAlign: 'center', background: 'linear-gradient(135deg, #f43f5e, #a855f7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            5 Steps to Success
+          </h2>
 
-          {/* Steps */}
-          <div className="space-y-6">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '30px' }}>
             {[
-              {
-                num: 1,
-                title: 'Tell Us Your Target',
-                desc: 'Share your dream company, role, and experience level',
-                icon: '🎯',
-              },
-              {
-                num: 2,
-                title: 'Get AI Roadmap',
-                desc: 'We generate a personalized 12-week interview prep plan',
-                icon: '🗺️',
-              },
-              {
-                num: 3,
-                title: 'Study & Track',
-                desc: 'Follow daily goals with real-time progress analytics',
-                icon: '📊',
-              },
-              {
-                num: 4,
-                title: 'Mock Interviews',
-                desc: 'Practice with AI and get detailed feedback instantly',
-                icon: '💬',
-              },
-              {
-                num: 5,
-                title: 'Land The Job! 🎉',
-                desc: 'Go into your interview fully prepared and confident',
-                icon: '✨',
-              },
-            ].map((step, idx) => (
-              <div key={idx} className="flex gap-6 items-start group">
-                {/* Step Number */}
-                <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-accent to-pink-500 flex items-center justify-center text-white font-black text-2xl group-hover:scale-110 transition-transform shadow-lg">
-                  {step.num}
+              { step: '1', title: 'Tell Us Your Target', emoji: '🎯' },
+              { step: '2', title: 'Get AI Roadmap', emoji: '🗺️' },
+              { step: '3', title: 'Study & Track', emoji: '📊' },
+              { step: '4', title: 'Mock Interviews', emoji: '💬' },
+              { step: '5', title: 'Land The Job!', emoji: '🎉' },
+            ].map((item, i) => (
+              <div key={i} style={{ textAlign: 'center' }}>
+                <div style={{ width: '60px', height: '60px', background: 'linear-gradient(135deg, #f43f5e, #ec4899)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px', fontWeight: '900', color: 'white', margin: '0 auto 20px' }}>
+                  {item.step}
                 </div>
-
-                {/* Step Content */}
-                <div className="flex-1 pt-2">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-2xl font-black">{step.title}</h3>
-                    <span className="text-2xl">{step.icon}</span>
-                  </div>
-                  <p className="text-muted-foreground text-lg leading-relaxed">{step.desc}</p>
-                </div>
+                <div style={{ fontSize: '32px', marginBottom: '10px' }}>{item.emoji}</div>
+                <h3 style={{ fontSize: '16px', fontWeight: '700' }}>{item.title}</h3>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-32 px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          {/* CTA Card */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-accent/30 via-pink-500/20 to-purple-500/10 border-2 border-accent/30 p-16 text-center group hover:border-accent/60 transition-all">
-            {/* Animated background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      {/* Pricing */}
+      <section id="pricing" style={{ padding: '120px 40px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '48px', fontWeight: '900', marginBottom: '80px', textAlign: 'center', background: 'linear-gradient(135deg, #f43f5e, #a855f7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            Simple, Transparent Pricing
+          </h2>
 
-            <div className="relative">
-              <h2 className="text-6xl md:text-7xl font-black mb-6">
-                Ready to{' '}
-                <span className="bg-gradient-to-r from-accent to-pink-500 bg-clip-text text-transparent">
-                  Glow
-                </span>
-                ?
-              </h2>
-              <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-                Join thousands of students who landed their dream jobs with GlowGrid. Your success story starts here. 🚀
-              </p>
-
-              {/* CTA Buttons */}
-              <div className="flex gap-4 justify-center flex-wrap">
-                <Link href="/sign-up">
-                  <Button
-                    size="lg"
-                    className="text-lg h-14 px-10 bg-white text-accent hover:bg-gray-100 font-black transition-all hover:scale-105 gap-2"
-                  >
-                    <Sparkles className="w-5 h-5" />
-                    Start Your Free Trial
-                  </Button>
-                </Link>
-                <Link href="/sign-in">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="text-lg h-14 px-10 border-2 border-white text-white hover:bg-white/10 font-black"
-                  >
-                    Sign In
-                  </Button>
-                </Link>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
+            {pricingPlans.map((plan, i) => (
+              <div key={i}
+                style={{
+                  background: plan.highlight ? 'linear-gradient(135deg, rgba(244, 63, 94, 0.2), rgba(168, 85, 247, 0.2))' : 'rgba(30, 41, 59, 0.6)',
+                  border: plan.highlight ? '2px solid rgba(244, 63, 94, 0.5)' : '1px solid rgba(148, 163, 184, 0.1)',
+                  borderRadius: '12px',
+                  padding: '40px',
+                  position: 'relative',
+                  transition: 'all 0.3s',
+                  backdropFilter: 'blur(10px)',
+                  transform: plan.highlight ? 'scale(1.05)' : 'scale(1)'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = plan.highlight ? 'scale(1.08)' : 'translateY(-5px)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = plan.highlight ? 'scale(1.05)' : 'scale(1)'}
+              >
+                {plan.highlight && <div style={{ position: 'absolute', top: '20px', right: '20px', background: '#f43f5e', color: 'white', padding: '5px 15px', borderRadius: '20px', fontSize: '12px', fontWeight: '700' }}>POPULAR</div>}
+                <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '10px' }}>{plan.name}</h3>
+                <div style={{ fontSize: '36px', fontWeight: '900', marginBottom: '30px', color: '#f43f5e' }}>{plan.price}</div>
+                <ul style={{ listStyle: 'none', padding: 0, marginBottom: '30px' }}>
+                  {plan.features.map((feature, j) => (
+                    <li key={j} style={{ color: '#cbd5e1', fontSize: '14px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ color: '#f43f5e' }}>✓</span> {feature}
+                    </li>
+                  ))}
+                </ul>
+                <button style={{
+                  width: '100%',
+                  background: plan.highlight ? 'linear-gradient(135deg, #f43f5e, #ec4899)' : 'transparent',
+                  border: plan.highlight ? 'none' : '1px solid #f43f5e',
+                  color: 'white',
+                  padding: '12px',
+                  borderRadius: '6px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  transition: '0.3s'
+                }} onMouseEnter={(e) => (e.target as HTMLElement).style.transform = 'translateY(-2px)'} onMouseLeave={(e) => (e.target as HTMLElement).style.transform = 'translateY(0)'}>
+                  Get Started
+                </button>
               </div>
-
-              <p className="text-sm text-muted-foreground mt-8 font-medium">
-                ✨ No credit card required • 7-day free trial • Cancel anytime
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border/20 py-16 px-6 lg:px-8 bg-gradient-to-t from-background/80 to-transparent">
-        <div className="max-w-7xl mx-auto">
-          {/* Footer Grid */}
-          <div className="grid md:grid-cols-5 gap-12 mb-12">
-            {/* Brand */}
-            <div className="md:col-span-1">
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles className="w-6 h-6 text-accent" />
-                <span className="font-black text-xl">GlowGrid</span>
-              </div>
-              <p className="text-muted-foreground text-sm">
-                Your personal AI interview prep coach. Always ready, always learning.
-              </p>
-            </div>
+      {/* CTA Section */}
+      <section style={{ padding: '120px 40px', background: 'linear-gradient(135deg, rgba(244, 63, 94, 0.1), rgba(168, 85, 247, 0.1))' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '42px', fontWeight: '900', marginBottom: '20px' }}>
+            Ready to Glow?
+          </h2>
+          <p style={{ fontSize: '18px', color: '#cbd5e1', marginBottom: '40px' }}>
+            Join thousands of students who landed their dream jobs with GlowGrid. Your success story starts here.
+          </p>
+          <button style={{ background: 'linear-gradient(135deg, #f43f5e, #ec4899)', border: 'none', color: 'white', padding: '16px 50px', borderRadius: '8px', fontSize: '16px', fontWeight: '700', cursor: 'pointer', boxShadow: '0 20px 40px rgba(244, 63, 94, 0.3)', transition: '0.3s' }} onMouseEnter={(e) => (e.target as HTMLElement).style.transform = 'translateY(-3px)'} onMouseLeave={(e) => (e.target as HTMLElement).style.transform = 'translateY(0)'}>
+            Start Your Free Trial
+          </button>
+        </div>
+      </section>
 
-            {/* Links */}
+      {/* Footer */}
+      <footer style={{ padding: '60px 40px', borderTop: '1px solid rgba(148, 163, 184, 0.1)', background: 'rgba(15, 23, 42, 0.5)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', marginBottom: '40px' }}>
             {[
-              {
-                title: 'Product',
-                links: ['Features', 'Pricing', 'FAQ', 'Blog'],
-              },
-              {
-                title: 'Company',
-                links: ['About', 'Contact', 'Press', 'Careers'],
-              },
-              {
-                title: 'Resources',
-                links: ['Docs', 'API', 'Community', 'Support'],
-              },
-              {
-                title: 'Legal',
-                links: ['Privacy', 'Terms', 'Cookie Policy', 'Security'],
-              },
-            ].map((section) => (
-              <div key={section.title}>
-                <h4 className="font-black mb-4 text-foreground">{section.title}</h4>
-                <ul className="space-y-2">
-                  {section.links.map((link) => (
-                    <li key={link}>
-                      <Link
-                        href="#"
-                        className="text-muted-foreground hover:text-accent transition-colors text-sm"
-                      >
-                        {link}
-                      </Link>
+              { title: 'Product', links: ['Features', 'Pricing', 'FAQ', 'Blog'] },
+              { title: 'Company', links: ['About', 'Contact', 'Careers', 'Press'] },
+              { title: 'Resources', links: ['Docs', 'API', 'Community', 'Support'] },
+              { title: 'Legal', links: ['Privacy', 'Terms', 'Cookie Policy', 'Security'] },
+            ].map((col, i) => (
+              <div key={i}>
+                <h4 style={{ fontSize: '14px', fontWeight: '700', marginBottom: '20px', color: '#f1f5f9' }}>{col.title}</h4>
+                <ul style={{ listStyle: 'none', padding: 0 }}>
+                  {col.links.map((link, j) => (
+                    <li key={j} style={{ marginBottom: '12px' }}>
+                      <a href="#" style={{ color: '#cbd5e1', textDecoration: 'none', cursor: 'pointer', transition: '0.3s' }} onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#f43f5e'} onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#cbd5e1'}>{link}</a>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
-
-          {/* Bottom Footer */}
-          <div className="border-t border-border/30 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-muted-foreground text-sm">
-                © 2024 GlowGrid. Built with ❤️ by students, for students.
-              </p>
-              <div className="flex gap-4">
-                {['Twitter', 'Discord', 'GitHub'].map((social) => (
-                  <Link
-                    key={social}
-                    href="#"
-                    className="text-muted-foreground hover:text-accent transition-colors text-sm font-medium"
-                  >
-                    {social}
-                  </Link>
-                ))}
-              </div>
-            </div>
+          <div style={{ borderTop: '1px solid rgba(148, 163, 184, 0.1)', paddingTop: '40px', textAlign: 'center', color: '#94a3b8', fontSize: '14px' }}>
+            <p>© 2024 GlowGrid. Built with ❤️ by students, for students.</p>
           </div>
         </div>
       </footer>
