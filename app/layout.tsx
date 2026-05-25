@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     // <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className="bg-background text-foreground">
+        <body className="bg-slate-950 text-slate-100">
           <ThemeProvider>
             {children}
             <ThemeSwitcher />

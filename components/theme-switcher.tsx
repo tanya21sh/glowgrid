@@ -3,6 +3,7 @@
 
 import { useTheme, type Theme } from '@/lib/theme-context';
 import { Moon, Sun, Sparkles, Heart, Zap, Waves } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const themes: Array<{ value: Theme; label: string; icon: React.ComponentType<any>; description: string }> = [
   { value: 'dark', label: 'Dark', icon: Moon, description: 'Classic dark mode' },
@@ -14,7 +15,14 @@ const themes: Array<{ value: Theme; label: string; icon: React.ComponentType<any
 ];
 
 export function ThemeSwitcher() {
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <div className="fixed bottom-6 right-6 z-40">

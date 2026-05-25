@@ -29,16 +29,27 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-background/50 overflow-hidden">
-      {/* Animated background blobs */}
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 overflow-hidden relative">
+      {/* Animated background blobs - Enhanced */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-accent/20 rounded-full blur-3xl opacity-40 animate-blob" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl opacity-30 animate-blob animation-delay-2000" />
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl opacity-20 animate-blob animation-delay-4000" />
+        {/* Main accent blob */}
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-gradient-to-br from-accent/30 to-pink-500/20 rounded-full blur-3xl opacity-50 animate-blob" />
+        
+        {/* Secondary pink blob */}
+        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-gradient-to-tr from-pink-500/25 to-purple-500/15 rounded-full blur-3xl opacity-40 animate-blob animation-delay-2000" />
+        
+        {/* Tertiary blue blob */}
+        <div className="absolute top-1/2 left-1/2 w-[700px] h-[700px] bg-gradient-to-tl from-blue-500/15 via-cyan-400/10 to-teal-400/5 rounded-full blur-3xl opacity-30 animate-blob animation-delay-4000" />
+        
+        {/* Purple accent blob */}
+        <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-gradient-to-bl from-purple-500/20 to-pink-500/10 rounded-full blur-3xl opacity-35 animate-blob animation-delay-6000" />
+        
+        {/* Grid background overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-[size:50px_50px] opacity-20" />
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-background/40 backdrop-blur-2xl border-b border-border/30">
+      <nav className="fixed top-0 w-full z-50 bg-slate-900/40 backdrop-blur-2xl border-b border-slate-700/30">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center gap-3 group">
@@ -184,66 +195,82 @@ export default function LandingPage() {
                 title: 'AI Roadmaps',
                 desc: 'Custom interview prep plans generated just for you',
                 gradient: 'from-blue-500 to-cyan-500',
+                bgGradient: 'bg-gradient-to-br from-blue-500/5 to-cyan-500/5',
               },
               {
                 icon: BarChart3,
                 title: 'Live Analytics',
                 desc: 'Track progress with real-time insights & metrics',
                 gradient: 'from-purple-500 to-pink-500',
+                bgGradient: 'bg-gradient-to-br from-purple-500/5 to-pink-500/5',
               },
               {
                 icon: Users,
                 title: 'Mock Interviews',
                 desc: 'AI-powered practice with instant feedback',
                 gradient: 'from-orange-500 to-red-500',
+                bgGradient: 'bg-gradient-to-br from-orange-500/5 to-red-500/5',
               },
               {
                 icon: BookOpen,
                 title: 'Study Resources',
                 desc: 'Curated materials for all interview types',
                 gradient: 'from-green-500 to-emerald-500',
+                bgGradient: 'bg-gradient-to-br from-green-500/5 to-emerald-500/5',
               },
               {
                 icon: Zap,
                 title: 'Smart Scheduling',
                 desc: 'AI-optimized study plan that adapts to you',
                 gradient: 'from-yellow-500 to-orange-500',
+                bgGradient: 'bg-gradient-to-br from-yellow-500/5 to-orange-500/5',
               },
               {
                 icon: TrendingUp,
                 title: 'Weekly Goals',
                 desc: 'Stay motivated with achievable milestones',
                 gradient: 'from-pink-500 to-red-500',
+                bgGradient: 'bg-gradient-to-br from-pink-500/5 to-red-500/5',
               },
               {
                 icon: Target,
                 title: 'Weak Area Focus',
                 desc: 'AI identifies gaps and recommends practice',
                 gradient: 'from-cyan-500 to-blue-500',
+                bgGradient: 'bg-gradient-to-br from-cyan-500/5 to-blue-500/5',
               },
               {
                 icon: CheckCircle2,
                 title: 'Interview Checklist',
                 desc: 'Complete prep with our verification system',
                 gradient: 'from-teal-500 to-green-500',
+                bgGradient: 'bg-gradient-to-br from-teal-500/5 to-green-500/5',
               },
             ].map((feature, idx) => (
               <div
                 key={idx}
-                className="group relative overflow-hidden rounded-2xl bg-card/50 backdrop-blur-xl border border-border/50 p-6 hover:border-accent/50 transition-all duration-300 hover:bg-card hover:shadow-2xl hover:shadow-accent/20 hover:-translate-y-2"
+                className={`group relative overflow-hidden rounded-2xl ${feature.bgGradient} backdrop-blur-xl border-2 border-transparent hover:border-accent/60 p-6 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/30 hover:-translate-y-3 cursor-pointer`}
               >
-                {/* Gradient overlay on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity`} />
+                {/* Gradient border on hover */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{backgroundImage: `linear-gradient(135deg, var(--tw-gradient-stops))`}} />
 
-                <div className="relative">
-                  {/* Icon */}
-                  <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${feature.gradient} mb-4 group-hover:scale-110 transition-transform`}>
-                    <feature.icon className="w-6 h-6 text-white" />
+                {/* Enhanced gradient overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-[0.08] transition-all duration-500 rounded-2xl`} />
+
+                <div className="relative z-10">
+                  {/* Icon with enhanced animation */}
+                  <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${feature.gradient} mb-5 group-hover:scale-125 group-hover:shadow-lg group-hover:shadow-current/50 transition-all duration-500 text-white`}>
+                    <feature.icon className="w-6 h-6" />
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-lg font-black mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{feature.desc}</p>
+                  <h3 className="text-lg font-black mb-3 group-hover:text-accent transition-colors">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed group-hover:text-foreground/70 transition-colors">{feature.desc}</p>
+                  
+                  {/* Arrow indicator on hover */}
+                  <div className="mt-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+                    <ArrowRight className="w-4 h-4 text-accent" />
+                  </div>
                 </div>
               </div>
             ))}

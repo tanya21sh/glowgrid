@@ -61,6 +61,32 @@ const config = {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },
         },
+        blob: {
+          "0%": { 
+            transform: "translate(0, 0) scale(1)",
+            opacity: "0.5",
+          },
+          "33%": { 
+            transform: "translate(30px, -50px) scale(1.1)",
+            opacity: "0.6",
+          },
+          "66%": { 
+            transform: "translate(-20px, 20px) scale(0.9)",
+            opacity: "0.5",
+          },
+          "100%": { 
+            transform: "translate(0, 0) scale(1)",
+            opacity: "0.5",
+          },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-20px)" },
+        },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -68,6 +94,9 @@ const config = {
         shimmer: "shimmer 2s linear infinite",
         pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         spin: "spin 1s linear infinite",
+        blob: "blob 7s infinite",
+        float: "float 3s ease-in-out infinite",
+        "fade-in": "fade-in 0.5s ease-in-out",
       },
     },
   },
