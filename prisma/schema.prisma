@@ -1,0 +1,238 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER & AUTHENTICATION MODELS
+// ============================================
+
+model User {
+  id             String          @id @default(cuid())
+  clerkId        String          @unique
+  email          String          @unique
+  name           String?
+  image          String?
+  bio            String?
+  currentLevel   String          @default("beginner") // beginner, intermediate, advanced
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  
+  // Relations
+  roadmaps       Roadmap[]
+  progress       DailyProgress[]
+  achievements   Achievement[]
+  weakTopics     WeakTopic[]
+  mockInterviews MockInterview[]
+  notes          StudyNote[]
+}
+
+// ============================================
+// ROADMAP MODELS
+// ============================================
+
+model Roadmap {
+  id             String          @id @default(cuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Input parameters
+  company        String
+  role           String
+  timeline       String          // 15, 30, 60, or custom (e.g., "45")
+  level          String          // beginner, intermediate, advanced
+  jdSummary      String?         @db.Text
+  
+  // Generated content
+  dsaRoadmap     String?         @db.Text
+  systemDesignRoadmap String?    @db.Text
+  fundamentalsRoadmap String?    @db.Text
+  behavioralRoadmap String?      @db.Text
+  dailyPlan      String?         @db.Text
+  
+  // AI generation data
+  generatedContent String?       @db.Text // Full JSON of generated content
+  
+  // Status
+  isActive       Boolean         @default(true)
+  isArchived     Boolean         @default(false)
+  
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  
+  // Relations
+  tasks          RoadmapTask[]
+  milestones     Milestone[]
+}
+
+model RoadmapTask {
+  id             String          @id @default(cuid())
+  roadmapId      String
+  roadmap        Roadmap         @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  
+  title          String
+  description    String?         @db.Text
+  category       String          // DSA, SystemDesign, Fundamentals, Behavioral, MockInterview
+  subcategory    String?         // e.g., Arrays, Database, OOP
+  difficulty     String          @default("medium") // easy, medium, hard
+  estimatedTime  Int?            // in minutes
+  
+  completed      Boolean         @default(false)
+  completedAt    DateTime?
+  
+  notes          String?         @db.Text
+  order          Int             @default(0)
+  
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Milestone {
+  id             String          @id @default(cuid())
+  roadmapId      String
+  roadmap        Roadmap         @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  
+  week           Int
+  title          String
+  description    String?         @db.Text
+  dueDate        DateTime?
+  completed      Boolean         @default(false)
+  
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+// ============================================
+// PROGRESS TRACKING MODELS
+// ============================================
+
+model DailyProgress {
+  id             String          @id @default(cuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  date           DateTime        @unique(map: "unique_user_date")
+  studyHours     Float           @default(0)
+  problemsSolved Int             @default(0)
+  mockInterviews Int             @default(0)
+  revisionSessions Int           @default(0)
+  
+  tasksCompleted Int             @default(0)
+  currentStreak  Int             @default(0)
+  
+  notes          String?         @db.Text
+  mood           String?         // happy, neutral, stressed
+  
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Achievement {
+  id             String          @id @default(cuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title          String
+  description    String?
+  icon           String?
+  badge          String?
+  unlockedAt     DateTime        @default(now())
+  
+  createdAt      DateTime        @default(now())
+}
+
+model WeakTopic {
+  id             String          @id @default(cuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  topic          String
+  category       String          // DSA, SystemDesign, etc.
+  failureCount   Int             @default(1)
+  lastAttempt    DateTime        @default(now())
+  
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model MockInterview {
+  id             String          @id @default(cuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  company        String
+  role           String
+  difficulty     String          // easy, medium, hard
+  duration       Int             // in minutes
+  score          Float?          // 0-100
+  feedback       String?         @db.Text
+  recordingUrl   String?
+  
+  completedAt    DateTime?
+  createdAt      DateTime        @default(now())
+}
+
+model StudyNote {
+  id             String          @id @default(cuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title          String
+  content        String          @db.Text
+  category       String          // DSA, SystemDesign, etc.
+  tags           String[]        @default([])
+  
+  isPinned       Boolean         @default(false)
+  
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+// ============================================
+// RESOURCE MODELS
+// ============================================
+
+model Resource {
+  id             String          @id @default(cuid())
+  title          String
+  description    String?         @db.Text
+  url            String
+  resourceType   String          // leetcode, youtube, article, blog, pdf
+  category       String          // DSA, SystemDesign, Fundamentals, Behavioral
+  difficulty     String?         // easy, medium, hard
+  duration       Int?            // in minutes
+  rating         Float?          // 0-5
+  
+  tags           String[]        @default([])
+  
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+// ============================================
+// ANALYTICS MODELS
+// ============================================
+
+model Analytics {
+  id             String          @id @default(cuid())
+  userId         String          @unique
+  
+  totalStudyHours Float          @default(0)
+  totalProblems   Int            @default(0)
+  completionRate Float           @default(0)
+  consistencyScore Float          @default(0) // 0-100
+  
+  mostPracticedTopic String?
+  weakestTopic    String?
+  
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
