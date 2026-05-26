@@ -38,7 +38,6 @@ export function ThemeSwitcher() {
 
         {/* Theme menu - shows on hover */}
         <div className="absolute bottom-20 right-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl p-3 w-48">
-          <p className="text-xs font-bold text-accent mb-3 px-2">Choose Your Vibe</p>
           <div className="space-y-2">
             {themes.map(({ value, label, icon: Icon, description }) => (
               <button
