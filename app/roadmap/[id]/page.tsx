@@ -29,18 +29,14 @@ export default function RoadmapDetailPage() {
 
   const fetchRoadmapAndTasks = async () => {
     try {
-      // Fetch roadmap details
-      const roadmapResponse = await fetch(`/api/dashboard?userId=${userId}`);
+      // Fetch roadmap details with tasks included
+      const roadmapResponse = await fetch(`/api/roadmaps/${roadmapId}`);
       if (roadmapResponse.ok) {
         const roadmapData = await roadmapResponse.json();
         setRoadmap(roadmapData);
-
-        // Fetch tasks for this roadmap
-        const tasksResponse = await fetch(`/api/tasks?userId=${userId}&roadmapId=${roadmapData?.id}`);
-        if (tasksResponse.ok) {
-          const tasksData = await tasksResponse.json();
-          setTasks(tasksData);
-        }
+        setTasks(roadmapData.tasks || []);
+      } else {
+        toast.error("Failed to load roadmap");
       }
     } catch (error) {
       console.error("Error fetching roadmap:", error);

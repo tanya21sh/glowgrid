@@ -14,6 +14,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Ensure user exists - create if doesn't exist (for guest users)
+    await prisma.user.upsert({
+      where: { id: userId },
+      update: {},
+      create: {
+        id: userId,
+        clerkId: `clerk_${userId}`,
+        email: `${userId}@glowgrid.local`,
+        name: userId === "guest-user" ? "Guest User" : userId,
+      },
+    });
+
     // Generate AI content
     let aiContent;
     try {
@@ -61,6 +73,42 @@ export async function POST(req: NextRequest) {
         isActive: true,
       },
     });
+
+    // Create default tasks for the roadmap
+    const categories = [
+      {
+        name: "DSA - Data Structures",
+        tasks: ["Arrays & Strings", "Linked Lists", "Stacks & Queues", "Trees & Graphs"],
+      },
+      {
+        name: "System Design",
+        tasks: ["Scalability Basics", "Database Design", "Caching Strategies", "Microservices"],
+      },
+      {
+        name: "CS Fundamentals",
+        tasks: ["Operating Systems", "Networks", "Databases", "Algorithms Complexity"],
+      },
+      {
+        name: "Behavioral",
+        tasks: ["Tell me about yourself", "Why this company?", "Describe a challenge", "Team collaboration"],
+      },
+    ];
+
+    let order = 0;
+    for (const category of categories) {
+      for (const taskTitle of category.tasks) {
+        await prisma.roadmapTask.create({
+          data: {
+            roadmapId: roadmap.id,
+            title: taskTitle,
+            category: category.name,
+            difficulty: "medium",
+            order: order++,
+            completed: false,
+          },
+        });
+      }
+    }
 
     return NextResponse.json(roadmap);
   } catch (error) {
