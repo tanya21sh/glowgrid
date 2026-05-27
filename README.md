@@ -1,134 +1,269 @@
-# PrepPilot - AI-Powered Interview Preparation Platform
+# GlowGrid - Interview Preparation Platform
 
-Your Personalized Placement Preparation OS
+**Status: ✅ PRODUCTION READY**
 
-PrepPilot is a modern, full-stack web application that helps job seekers prepare for interviews with AI-generated personalized roadmaps, progress tracking, and comprehensive learning resources.
+GlowGrid is a modern, full-stack web application that helps job seekers prepare for interviews with personalized roadmaps, progress tracking, and comprehensive learning resources.
 
-## 🚀 Features
+## ✨ What's Working
 
-- **AI-Powered Roadmaps**: Generate personalized preparation plans based on your target company, role, and timeline
-- **Progress Tracking**: Track your learning journey with detailed analytics and performance metrics
-- **Comprehensive Coverage**: DSA, System Design, CS Fundamentals, and Behavioral interview preparation
-- **Daily Tasks**: Organized daily tasks with difficulty levels and estimated time
-- **Mock Interviews**: Practice with AI-generated interview questions
-- **Analytics Dashboard**: Visualize your progress with detailed charts and insights
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
-- **Dark Mode**: Premium dark theme for comfortable studying
+✅ **Dynamic Landing Page** - Beautiful hero with pricing, features, and smooth animations  
+✅ **Dashboard** - Real-time stats, active roadmap display, quick actions  
+✅ **Roadmap Generator** - Create personalized preparation plans  
+✅ **Progress Tracker** - Track tasks with working checkbox toggle  
+✅ **Roadmap Details** - View complete roadmaps with progress bars  
+✅ **Task Management** - Create, update, and complete tasks with database persistence  
+✅ **Analytics** - Performance insights and statistics  
+✅ **Responsive Design** - Works perfectly on desktop, tablet, mobile  
+✅ **Theme System** - 6 beautiful theme options  
+✅ **All Navigation** - All tabs and links fully functional  
 
-## 🛠 Tech Stack
+## 🎯 Live Features
 
-### Frontend
-- **Next.js 14** - React framework with App Router
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Utility-first CSS framework
-- **shadcn/ui** - Beautiful UI components
-- **Framer Motion** - Smooth animations
-- **React Hook Form** - Form management
+### Authentication & Pages
+- `/` - Landing page with dynamic UI
+- `/dashboard` - User dashboard with real data
+- `/roadmap-generator` - AI-powered roadmap creation
+- `/roadmap/[id]` - Detailed roadmap view
+- `/tracker` - Task tracker with working toggles ✅
+- `/analytics` - Performance analytics
+- `/sign-in` - Login page (demo mode)
+- `/sign-up` - Registration page (demo mode)
 
-### Backend
-- **Next.js API Routes** - Serverless API endpoints
-- **Prisma** - ORM for database management
-- **PostgreSQL** - Relational database
+### Core Functionality
+- **Task Toggle**: Click any task checkbox to mark complete/incomplete
+- **Real Database Updates**: Changes persist in SQLite database
+- **Live Stats**: Completion rates calculated in real-time
+- **Progress Bars**: Visual progress tracking
+- **Notifications**: Toast feedback on all actions
+- **Loading States**: Beautiful loading indicators
+- **Error Handling**: Graceful error messages
 
-### Authentication & AI
-- **Clerk** - User authentication
-- **OpenAI API** - AI-powered content generation
+## 🚀 Quick Start
 
-## 📋 Prerequisites
-
-- Node.js 16+ and npm/yarn
-- PostgreSQL database (local or cloud like Supabase)
-- Clerk account for authentication
-- OpenAI API key
-
-## 🔧 Installation
-
-1. **Clone the repository**
 ```bash
-git clone <repository-url>
-cd preppilot
+# Install
+npm install
+
+# Setup database
+npx prisma db push
+
+# Run dev server
+npm run dev
+
+# Open browser
+# http://localhost:3000
 ```
+
+## 📦 Tech Stack
+
+- **Next.js 13.5.7** - App Router, SSR
+- **TypeScript** - Type-safe code
+- **React 18.2** - UI components
+- **Tailwind CSS** - Styling
+- **Prisma 5.8** - Database ORM
+- **SQLite** - Lightweight database
+- **React Hook Form** - Form handling
+- **React Hot Toast** - Notifications
+- **Lucide React** - Icons
 
 2. **Install dependencies**
 ```bash
 npm install
 ```
 
-3. **Set up environment variables**
-
-Create a `.env.local` file:
-
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/preppilot"
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_key
-CLERK_SECRET_KEY=your_clerk_secret
-OPENAI_API_KEY=your_openai_key
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NODE_ENV=development
-```
-
-4. **Set up the database**
-
+3. **Set up database** (uses SQLite by default)
 ```bash
 npx prisma db push
 npx prisma generate
 ```
 
-5. **Run the development server**
-
+4. **Run development server**
 ```bash
 npm run dev
+# Open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+5. **Production build**
+```bash
+npm run build
+npm start
+```
 
 ## 📁 Project Structure
 
 ```
-preppilot/
+glowgrid/
 ├── app/
-│   ├── api/              # API routes
-│   ├── dashboard/        # Dashboard page
-│   ├── roadmap-generator/ # Roadmap generator
-│   ├── tracker/          # Progress tracker
-│   ├── analytics/        # Analytics page
-│   ├── layout.tsx        # Root layout
-│   ├── globals.css       # Global styles
-│   └── page.tsx          # Landing page
+│   ├── api/               # All API endpoints
+│   ├── dashboard/         # Dashboard page
+│   ├── roadmap/[id]/      # Roadmap detail
+│   ├── roadmap-generator/ # Generator form
+│   ├── tracker/           # Task tracker
+│   ├── analytics/         # Analytics page
+│   ├── sign-in/           # Sign in
+│   ├── sign-up/           # Sign up
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Landing page
+│   └── globals.css        # Global styles
 ├── components/
-│   ├── ui/              # UI components
-│   └── ...              # Feature components
+│   ├── ui/                # shadcn components
+│   ├── theme-switcher.tsx # Theme selector
+│   └── ...
 ├── lib/
-│   ├── types.ts         # TypeScript definitions
-│   ├── hooks.ts         # Custom hooks
-│   ├── ai-service.ts    # OpenAI integration
-│   ├── prisma.ts        # Prisma client
-│   └── utils/
+│   ├── prisma.ts          # DB client
+│   ├── theme-context.tsx  # Theme system
+│   ├── ai-service.ts      # AI integration
+│   └── utils.ts           # Helpers
 ├── prisma/
-│   └── schema.prisma    # Database schema
-└── public/              # Static assets
+│   └── schema.prisma      # Database schema (11 models)
+└── public/
 ```
 
-## 🎯 Key Pages
+## 🎯 Feature Details
 
-- **Landing Page** - Hero section with CTA
-- **Dashboard** - Overview and quick actions
-- **Roadmap Generator** - AI roadmap creation
-- **Progress Tracker** - Daily task management
-- **Analytics** - Performance insights
+### Landing Page (`/`)
+- Dynamic hero section with scroll-based animations
+- Feature showcase with 8 cards
+- 3-tier pricing display
+- How-it-works section
+- CTA sections
+- Professional footer
+- 6 theme options
+
+### Dashboard (`/dashboard`)
+- Real-time stats cards
+- Active roadmap display
+- Quick action buttons
+- Connection to tracker and analytics
+- Loading states
+
+### Roadmap Generator (`/roadmap-generator`)
+- Form: Company, Role, Timeline, Level
+- Creates roadmap in database
+- Redirects to roadmap detail
+- Form validation
+
+### Roadmap Detail (`/roadmap/[id]`)
+- Full roadmap view
+- All associated tasks
+- Progress bar
+- Category badges
+- Difficulty indicators
+- Completion tracking
+
+### Progress Tracker (`/tracker`) ✅
+- **Working task toggle** - Click to mark complete/incomplete
+- **Real database updates** - Changes persist
+- Real-time stats
+- Task grouping
+- Difficulty badges
+- Toast notifications
+
+### Analytics (`/analytics`)
+- Study hours overview
+- Completion rate
+- Performance trends
+- Weak topic identification
+
+## 🔧 API Endpoints
+
+All endpoints fully functional with database:
+
+```
+POST   /api/roadmaps/generate      Generate roadmap
+GET    /api/dashboard              Get user roadmap
+GET    /api/tasks                  Get tasks by userId
+PUT    /api/tasks                  Update task status
+POST   /api/progress/[userId]      Log progress
+GET    /api/analytics/[userId]     Get analytics
+```
+
+## 🎨 Theme System
+
+6 professionally designed themes:
+- Dark (default)
+- Light
+- Pink
+- Purple
+- Neon
+- Ocean
+
+Access via button in bottom-right corner
+
+## 📊 Database
+
+Using SQLite with Prisma ORM
+
+**11 Models:**
+- Roadmap
+- RoadmapTask
+- DailyProgress
+- Milestone
+- Achievement
+- WeakTopic
+- MockInterview
+- StudyNote
+- Resource
+- Analytics
+- User
 
 ## 🚀 Deployment
 
-Deploy to Vercel with a single click. Ensure all environment variables are configured.
-
+### Vercel (Recommended)
 ```bash
 vercel --prod
 ```
 
+### Docker
+```bash
+docker build -t glowgrid .
+docker run -p 3000:3000 glowgrid
+```
+
+### Traditional Server
+See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for full instructions
+
+## 📖 Documentation
+
+- [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) - Complete deployment guide
+- [SETUP_GUIDE.md](./SETUP_GUIDE.md) - Detailed setup instructions
+
+## 🐛 Troubleshooting
+
+**Port already in use:**
+```bash
+PORT=3001 npm run dev
+```
+
+**Database issues:**
+```bash
+npx prisma db push --force-reset
+```
+
+**Build errors:**
+```bash
+rm -rf .next node_modules
+npm install
+npm run build
+```
+
+## ✅ Status
+
+- ✅ All pages implemented
+- ✅ All features working
+- ✅ Task toggle fully functional
+- ✅ Database operations working
+- ✅ API endpoints connected
+- ✅ TypeScript strict mode
+- ✅ Production build passing
+- ✅ Ready for deployment
+
+## 📞 Support
+
+Check [GitHub Issues](https://github.com/tanya21sh/glowgrid/issues) for common problems
+
 ## 📄 License
 
-MIT License
-
----
+MIT License - See LICENSE file
 
 Built with ❤️ by the PrepPilot team
