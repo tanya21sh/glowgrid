@@ -3,17 +3,51 @@
 
 export const dynamic = 'force-dynamic';
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Plus, Zap, TrendingUp } from "lucide-react";
+import { ArrowRight, Plus, Zap, TrendingUp, Target } from "lucide-react";
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const [roadmap, setRoadmap] = useState<any>(null);
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
   // Using guest user since Clerk is disabled
+  const userId = "guest-user";
   const user = {
     firstName: "Guest",
     email: "guest@glowgrid.dev",
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      // Fetch roadmap data
+      const roadmapResponse = await fetch(`/api/dashboard?userId=${userId}`);
+      if (roadmapResponse.ok) {
+        const roadmapData = await roadmapResponse.json();
+        setRoadmap(roadmapData);
+
+        // Fetch stats/analytics
+        const analyticsResponse = await fetch(`/api/analytics/${userId}`);
+        if (analyticsResponse.ok) {
+          const analyticsData = await analyticsResponse.json();
+          setStats(analyticsData);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -45,14 +79,31 @@ export default function DashboardPage() {
         {/* Stats Overview */}
         <div className="grid md:grid-cols-4 gap-4 mb-12">
           {[
-            { label: "Active Roadmaps", value: "1", icon: Zap },
-            { label: "Study Hours", value: "24.5", icon: TrendingUp },
-            { label: "Problems Solved", value: "156", icon: TrendingUp },
-            { label: "Current Streak", value: "7 days", icon: Zap },
+            { 
+              label: "Active Roadmaps", 
+              value: roadmap ? "1" : "0", 
+              icon: Zap 
+            },
+            { 
+              label: "Study Hours", 
+              value: stats?.totalStudyHours || "0", 
+              icon: TrendingUp 
+            },
+            { 
+              label: "Tasks Completed", 
+              value: stats?.tasksCompleted || "0", 
+              icon: Target 
+            },
+            { 
+              label: "Completion Rate", 
+              value: stats?.completionRate || "0%", 
+              icon: TrendingUp 
+            },
           ].map((stat, idx) => (
             <Card key={idx}>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                  <stat.icon className="w-4 h-4" />
                   {stat.label}
                 </CardTitle>
               </CardHeader>
@@ -76,35 +127,51 @@ export default function DashboardPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="p-4 bg-card border border-border rounded-lg">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="font-semibold text-lg">Google SDE Prep</h3>
-                      <p className="text-sm text-muted-foreground">
-                        60-day comprehensive preparation
-                      </p>
-                    </div>
-                    <Badge>In Progress</Badge>
+                {loading ? (
+                  <div className="text-center py-8">
+                    <Zap className="w-8 h-8 text-accent mx-auto animate-spin mb-2" />
+                    <p className="text-muted-foreground">Loading your roadmap...</p>
                   </div>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex justify-between text-sm">
-                      <span>Progress</span>
-                      <span className="font-semibold">35%</span>
+                ) : roadmap ? (
+                  <div className="p-4 bg-card border border-border rounded-lg">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="font-semibold text-lg">
+                          {roadmap.company} - {roadmap.role}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {roadmap.timeline} day preparation • Level: {roadmap.level}
+                        </p>
+                      </div>
+                      <Badge>Active</Badge>
                     </div>
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <div
-                        className="bg-accent h-2 rounded-full"
-                        style={{ width: "35%" }}
-                      />
+                    <div className="space-y-2 mb-4">
+                      <div className="flex justify-between text-sm">
+                        <span>Progress</span>
+                        <span className="font-semibold">35%</span>
+                      </div>
+                      <div className="w-full bg-muted rounded-full h-2">
+                        <div
+                          className="bg-accent h-2 rounded-full"
+                          style={{ width: "35%" }}
+                        />
+                      </div>
                     </div>
+                    <Link href={`/roadmap/${roadmap.id}`}>
+                      <Button variant="outline" className="w-full">
+                        View Roadmap
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
                   </div>
-                  <Link href="/tracker">
-                    <Button variant="outline" className="w-full">
-                      View Tracker
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </Link>
-                </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <p className="mb-4">No active roadmap yet. Create one to get started!</p>
+                    <Link href="/roadmap-generator">
+                      <Button>Generate Roadmap</Button>
+                    </Link>
+                  </div>
+                )}
               </CardContent>
             </Card>
 

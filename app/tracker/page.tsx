@@ -7,11 +7,13 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Zap, CheckCircle2, Circle } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function TrackerPage() {
   const router = useRouter();
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState<string | null>(null);
 
   // Using a guest user for now since Clerk is disabled
   const userId = "guest-user";
@@ -31,6 +33,34 @@ export default function TrackerPage() {
       console.error("Error fetching tasks:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Toggle task completion status
+  const toggleTask = async (taskId: string, currentStatus: boolean) => {
+    setUpdating(taskId);
+    try {
+      const response = await fetch("/api/tasks", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: taskId,
+          completed: !currentStatus,
+        }),
+      });
+
+      if (response.ok) {
+        const updatedTask = await response.json();
+        setTasks(tasks.map(t => t.id === taskId ? updatedTask : t));
+        toast.success(!currentStatus ? "Task completed! 🎉" : "Task unmarked");
+      } else {
+        toast.error("Failed to update task");
+      }
+    } catch (error) {
+      console.error("Error updating task:", error);
+      toast.error("Failed to update task");
+    } finally {
+      setUpdating(null);
     }
   };
 
@@ -89,8 +119,9 @@ export default function TrackerPage() {
                         className="flex items-start gap-4 p-4 border border-border rounded-lg hover:bg-card/50 transition"
                       >
                         <button
-                          onClick={() => toggleTask(task.id)}
-                          className="mt-1 flex-shrink-0"
+                          onClick={() => toggleTask(task.id, task.completed)}
+                          disabled={updating === task.id}
+                          className="mt-1 flex-shrink-0 opacity-70 hover:opacity-100 transition"
                         >
                           {task.completed ? (
                             <CheckCircle2 className="w-6 h-6 text-accent" />
@@ -126,42 +157,29 @@ export default function TrackerPage() {
             {/* Today's Stats */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Today</CardTitle>
+                <CardTitle className="text-lg">Stats</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <p className="text-sm text-muted-foreground mb-2">
                     Tasks Completed
                   </p>
-                  <p className="text-3xl font-bold">3 / 5</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Study Hours
-                  </p>
-                  <p className="text-3xl font-bold">2.5h</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Weekly Stats */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">This Week</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Total Hours
-                  </p>
-                  <p className="text-3xl font-bold">18.5h</p>
+                  <p className="text-3xl font-bold">{tasks.filter(t => t.completed).length} / {tasks.length}</p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground mb-2">
                     Completion Rate
                   </p>
-                  <p className="text-3xl font-bold">87%</p>
+                  <p className="text-3xl font-bold">
+                    {tasks.length > 0 ? Math.round((tasks.filter(t => t.completed).length / tasks.length) * 100) : 0}%
+                  </p>
                 </div>
+                <Button
+                  onClick={() => router.push("/roadmap-generator")}
+                  className="w-full mt-4"
+                >
+                  Generate Roadmap
+                </Button>
               </CardContent>
             </Card>
           </div>
@@ -169,9 +187,4 @@ export default function TrackerPage() {
       </div>
     </div>
   );
-}
-
-function toggleTask(taskId: string) {
-  // Placeholder for task toggle functionality
-  console.log("Toggle task:", taskId);
 }
