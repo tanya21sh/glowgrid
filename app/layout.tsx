@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 // import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/lib/theme-context";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -33,7 +32,6 @@ export default function RootLayout({
         >
           <ThemeProvider>
             {children}
-            <ThemeSwitcher />
             <Toaster position="bottom-right" />
           </ThemeProvider>
         </body>

@@ -1,8 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 export default function LandingPage() {
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
 
@@ -67,7 +69,7 @@ export default function LandingPage() {
           <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
             <a href="#features" style={{ color: '#cbd5e1', textDecoration: 'none', cursor: 'pointer', transition: '0.3s' }} onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#f43f5e'} onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#cbd5e1'}>Features</a>
             <a href="#pricing" style={{ color: '#cbd5e1', textDecoration: 'none', cursor: 'pointer', transition: '0.3s' }} onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#f43f5e'} onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#cbd5e1'}>Pricing</a>
-            <button style={{ background: 'linear-gradient(135deg, #f43f5e, #ec4899)', border: 'none', color: 'white', padding: '10px 24px', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', transition: '0.3s', boxShadow: '0 4px 15px rgba(244, 63, 94, 0.3)' }} onMouseEnter={(e) => (e.target as HTMLElement).style.transform = 'translateY(-2px)'} onMouseLeave={(e) => (e.target as HTMLElement).style.transform = 'translateY(0)'}>
+            <button onClick={() => router.push('/roadmap-generator')} style={{ background: 'linear-gradient(135deg, #f43f5e, #ec4899)', border: 'none', color: 'white', padding: '10px 24px', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', transition: '0.3s', boxShadow: '0 4px 15px rgba(244, 63, 94, 0.3)' }} onMouseEnter={(e) => (e.target as HTMLElement).style.transform = 'translateY(-2px)'} onMouseLeave={(e) => (e.target as HTMLElement).style.transform = 'translateY(0)'}>
               Get Started
             </button>
           </div>
@@ -87,10 +89,10 @@ export default function LandingPage() {
             Master any interview with AI-powered prep. Personalized roadmaps, real-time feedback, and expert guidance—all in one place.
           </p>
           <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button style={{ background: 'linear-gradient(135deg, #f43f5e, #ec4899)', border: 'none', color: 'white', padding: '16px 40px', borderRadius: '8px', fontSize: '16px', fontWeight: '700', cursor: 'pointer', transition: '0.3s', boxShadow: '0 20px 40px rgba(244, 63, 94, 0.3)' }} onMouseEnter={(e) => (e.target as HTMLElement).style.transform = 'translateY(-3px)'} onMouseLeave={(e) => (e.target as HTMLElement).style.transform = 'translateY(0)'}>
+            <button onClick={() => router.push('/roadmap-generator')} style={{ background: 'linear-gradient(135deg, #f43f5e, #ec4899)', border: 'none', color: 'white', padding: '16px 40px', borderRadius: '8px', fontSize: '16px', fontWeight: '700', cursor: 'pointer', transition: '0.3s', boxShadow: '0 20px 40px rgba(244, 63, 94, 0.3)' }} onMouseEnter={(e) => (e.target as HTMLElement).style.transform = 'translateY(-3px)'} onMouseLeave={(e) => (e.target as HTMLElement).style.transform = 'translateY(0)'}>
               Start Free Trial
             </button>
-            <button style={{ background: 'transparent', border: '2px solid #f43f5e', color: '#f43f5e', padding: '14px 40px', borderRadius: '8px', fontSize: '16px', fontWeight: '700', cursor: 'pointer', transition: '0.3s' }} onMouseEnter={(e) => { (e.target as HTMLElement).style.background = 'rgba(244, 63, 94, 0.1)'; (e.target as HTMLElement).style.transform = 'translateY(-3px)'; }} onMouseLeave={(e) => { (e.target as HTMLElement).style.background = 'transparent'; (e.target as HTMLElement).style.transform = 'translateY(0)'; }}>
+            <button onClick={() => router.push('/dashboard')} style={{ background: 'transparent', border: '2px solid #f43f5e', color: '#f43f5e', padding: '14px 40px', borderRadius: '8px', fontSize: '16px', fontWeight: '700', cursor: 'pointer', transition: '0.3s' }} onMouseEnter={(e) => { (e.target as HTMLElement).style.background = 'rgba(244, 63, 94, 0.1)'; (e.target as HTMLElement).style.transform = 'translateY(-3px)'; }} onMouseLeave={(e) => { (e.target as HTMLElement).style.background = 'transparent'; (e.target as HTMLElement).style.transform = 'translateY(0)'; }}>
               Watch Demo
             </button>
           </div>
@@ -202,7 +204,7 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-                <button style={{
+                <button onClick={() => router.push('/roadmap-generator')} style={{
                   width: '100%',
                   background: plan.highlight ? 'linear-gradient(135deg, #f43f5e, #ec4899)' : 'transparent',
                   border: plan.highlight ? 'none' : '1px solid #f43f5e',
@@ -230,7 +232,7 @@ export default function LandingPage() {
           <p style={{ fontSize: '18px', color: '#cbd5e1', marginBottom: '40px' }}>
             Join thousands of students who landed their dream jobs with GlowGrid. Your success story starts here.
           </p>
-          <button style={{ background: 'linear-gradient(135deg, #f43f5e, #ec4899)', border: 'none', color: 'white', padding: '16px 50px', borderRadius: '8px', fontSize: '16px', fontWeight: '700', cursor: 'pointer', boxShadow: '0 20px 40px rgba(244, 63, 94, 0.3)', transition: '0.3s' }} onMouseEnter={(e) => (e.target as HTMLElement).style.transform = 'translateY(-3px)'} onMouseLeave={(e) => (e.target as HTMLElement).style.transform = 'translateY(0)'}>
+          <button onClick={() => router.push('/roadmap-generator')} style={{ background: 'linear-gradient(135deg, #f43f5e, #ec4899)', border: 'none', color: 'white', padding: '16px 50px', borderRadius: '8px', fontSize: '16px', fontWeight: '700', cursor: 'pointer', boxShadow: '0 20px 40px rgba(244, 63, 94, 0.3)', transition: '0.3s' }} onMouseEnter={(e) => (e.target as HTMLElement).style.transform = 'translateY(-3px)'} onMouseLeave={(e) => (e.target as HTMLElement).style.transform = 'translateY(0)'}>
             Start Your Free Trial
           </button>
         </div>
