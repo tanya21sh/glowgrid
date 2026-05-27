@@ -16,6 +16,9 @@ export default function RoadmapDetailPage() {
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [selectedTask, setSelectedTask] = useState<any>(null);
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
 
   const userId = "guest-user";
 
@@ -63,6 +66,35 @@ export default function RoadmapDetailPage() {
       toast.error("Failed to update task");
     } finally {
       setUpdating(null);
+    }
+  };
+
+  const fetchQuestions = async (task: any) => {
+    setSelectedTask(task);
+    setLoadingQuestions(true);
+    try {
+      const response = await fetch("/api/questions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          company: roadmap.company,
+          role: roadmap.role,
+          category: task.category,
+          taskTitle: task.title,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setQuestions(data.questions || []);
+      } else {
+        toast.error("Failed to load questions");
+      }
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+      toast.error("Failed to load questions");
+    } finally {
+      setLoadingQuestions(false);
     }
   };
 
@@ -356,6 +388,7 @@ export default function RoadmapDetailPage() {
                           position: 'relative',
                           overflow: 'hidden',
                         }}
+                        onClick={() => fetchQuestions(task)}
                         onMouseEnter={(e) => {
                           const el = e.currentTarget as HTMLElement;
                           el.style.background = `rgba(${colors.accent === '#f43f5e' ? '244, 63, 94' : colors.accent === '#a855f7' ? '168, 85, 247' : colors.accent === '#3b82f6' ? '59, 130, 246' : '34, 197, 94'}, 0.15)`;
@@ -372,7 +405,10 @@ export default function RoadmapDetailPage() {
                         }}
                       >
                         <button
-                          onClick={() => toggleTask(task.id, task.completed)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleTask(task.id, task.completed);
+                          }}
                           disabled={updating === task.id}
                           style={{
                             background: 'transparent',
@@ -432,6 +468,15 @@ export default function RoadmapDetailPage() {
                             </span>
                           )}
                         </div>
+
+                        <p style={{
+                          fontSize: '12px',
+                          color: colors.accent,
+                          marginTop: '12px',
+                          fontWeight: '500',
+                        }}>
+                          Click to see questions →
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -441,6 +486,174 @@ export default function RoadmapDetailPage() {
           </div>
         )}
       </div>
+
+      {/* Questions Modal */}
+      {selectedTask && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            backdropFilter: 'blur(4px)',
+          }}
+          onClick={() => setSelectedTask(null)}
+        >
+          <div
+            style={{
+              background: 'rgb(3, 7, 18)',
+              border: '1px solid rgba(148, 163, 184, 0.2)',
+              borderRadius: '16px',
+              maxWidth: '700px',
+              maxHeight: '80vh',
+              overflow: 'auto',
+              padding: '40px',
+              backdropFilter: 'blur(10px)',
+              width: '90%',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedTask(null)}
+              style={{
+                position: 'absolute',
+                top: '20px',
+                right: '20px',
+                background: 'rgba(244, 63, 94, 0.1)',
+                border: 'none',
+                width: '40px',
+                height: '40px',
+                borderRadius: '8px',
+                color: '#f43f5e',
+                fontSize: '24px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              ×
+            </button>
+
+            {/* Modal Header */}
+            <div style={{ marginBottom: '30px' }}>
+              <h2 style={{
+                fontSize: '28px',
+                fontWeight: 'bold',
+                color: '#f1f5f9',
+                marginBottom: '8px',
+              }}>
+                {selectedTask.title}
+              </h2>
+              <p style={{
+                fontSize: '16px',
+                color: '#cbd5e1',
+                marginBottom: '4px',
+              }}>
+                {selectedTask.category}
+              </p>
+              <p style={{
+                fontSize: '14px',
+                color: '#94a3b8',
+              }}>
+                Questions for {roadmap.company} • {roadmap.role}
+              </p>
+            </div>
+
+            {/* Questions Loading */}
+            {loadingQuestions ? (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '40px',
+              }}>
+                <div style={{ animation: 'spin 1s linear infinite' }}>
+                  <Zap style={{ width: '32px', height: '32px', color: '#f43f5e' }} />
+                </div>
+              </div>
+            ) : questions.length === 0 ? (
+              <div style={{
+                background: 'rgba(100, 116, 139, 0.1)',
+                border: '1px solid rgba(100, 116, 139, 0.3)',
+                borderRadius: '12px',
+                padding: '30px',
+                textAlign: 'center',
+              }}>
+                <p style={{ color: '#cbd5e1' }}>
+                  No questions available for this topic.
+                </p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {questions.map((q, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      background: 'rgba(15, 23, 42, 0.6)',
+                      border: '1px solid rgba(148, 163, 184, 0.2)',
+                      borderRadius: '12px',
+                      padding: '16px',
+                      transition: '0.3s',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.borderColor = '#f43f5e';
+                      el.style.background = 'rgba(244, 63, 94, 0.05)';
+                    }}
+                    onMouseLeave={(e) => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.borderColor = 'rgba(148, 163, 184, 0.2)';
+                      el.style.background = 'rgba(15, 23, 42, 0.6)';
+                    }}
+                  >
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                      <span style={{
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        color: '#f43f5e',
+                        minWidth: '30px',
+                      }}>
+                        {idx + 1}.
+                      </span>
+                      <div style={{ flex: 1 }}>
+                        <p style={{
+                          fontSize: '15px',
+                          color: '#f1f5f9',
+                          lineHeight: '1.6',
+                          marginBottom: '8px',
+                        }}>
+                          {q.question}
+                        </p>
+                        <span style={{
+                          fontSize: '12px',
+                          padding: '4px 10px',
+                          borderRadius: '4px',
+                          background: q.difficulty === 'easy' ? 'rgba(34, 197, 94, 0.2)' : q.difficulty === 'medium' ? 'rgba(168, 85, 247, 0.2)' : 'rgba(244, 63, 94, 0.2)',
+                          color: q.difficulty === 'easy' ? '#22c55e' : q.difficulty === 'medium' ? '#a855f7' : '#f43f5e',
+                          fontWeight: '500',
+                          textTransform: 'capitalize',
+                          display: 'inline-block',
+                        }}>
+                          {q.difficulty}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <style>{`
         @keyframes spin {
