@@ -4,25 +4,16 @@
 export const dynamic = 'force-dynamic';
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Plus, Zap, TrendingUp, Target } from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function DashboardPage() {
   const router = useRouter();
   const [roadmap, setRoadmap] = useState<any>(null);
-  const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // Using guest user since Clerk is disabled
   const userId = "guest-user";
-  const user = {
-    firstName: "Guest",
-    email: "guest@glowgrid.dev",
-  };
 
   useEffect(() => {
     fetchDashboardData();
@@ -30,222 +21,258 @@ export default function DashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
-      // Fetch roadmap data
       const roadmapResponse = await fetch(`/api/dashboard?userId=${userId}`);
       if (roadmapResponse.ok) {
         const roadmapData = await roadmapResponse.json();
         setRoadmap(roadmapData);
-
-        // Fetch stats/analytics
-        const analyticsResponse = await fetch(`/api/analytics/${userId}`);
-        if (analyticsResponse.ok) {
-          const analyticsData = await analyticsResponse.json();
-          setStats(analyticsData);
-        }
       }
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
+      toast.error("Failed to load roadmap");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex justify-between items-start">
-            <div>
-              <h1 className="text-4xl font-bold mb-2">
-                Welcome back, {user?.firstName}!
-              </h1>
-              <p className="text-muted-foreground">
-                Track your interview preparation journey
-              </p>
-            </div>
-            <Link href="/roadmap-generator">
-              <Button className="gap-2">
-                <Plus className="w-4 h-4" />
-                New Roadmap
-              </Button>
-            </Link>
-          </div>
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: 'rgb(3, 7, 18)',
+      color: 'rgb(241, 245, 249)',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto',
+    }}>
+      {/* Navigation */}
+      <header style={{
+        borderBottom: '1px solid rgba(148, 163, 184, 0.1)',
+        backgroundColor: 'rgba(15, 23, 42, 0.8)',
+        backdropFilter: 'blur(10px)',
+        padding: '20px 40px',
+      }}>
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+          <h1 style={{
+            fontSize: '24px',
+            fontWeight: 'bold',
+            color: '#f1f5f9',
+          }}>
+            GlowGrid
+          </h1>
+          <button
+            onClick={() => router.push('/roadmap-generator')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 20px',
+              background: 'linear-gradient(135deg, #f43f5e, #ec4899)',
+              border: 'none',
+              borderRadius: '8px',
+              color: 'white',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: '0.3s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 10px 25px rgba(244, 63, 94, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            <Plus style={{ width: '18px', height: '18px' }} />
+            New Roadmap
+          </button>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Stats Overview */}
-        <div className="grid md:grid-cols-4 gap-4 mb-12">
-          {[
-            { 
-              label: "Active Roadmaps", 
-              value: roadmap ? "1" : "0", 
-              icon: Zap 
-            },
-            { 
-              label: "Study Hours", 
-              value: stats?.totalStudyHours || "0", 
-              icon: TrendingUp 
-            },
-            { 
-              label: "Tasks Completed", 
-              value: stats?.tasksCompleted || "0", 
-              icon: Target 
-            },
-            { 
-              label: "Completion Rate", 
-              value: stats?.completionRate || "0%", 
-              icon: TrendingUp 
-            },
-          ].map((stat, idx) => (
-            <Card key={idx}>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <stat.icon className="w-4 h-4" />
-                  {stat.label}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">{stat.value}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Main Sections */}
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Left Column */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Active Roadmap */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Active Roadmap</CardTitle>
-                <CardDescription>
-                  Your current preparation plan
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {loading ? (
-                  <div className="text-center py-8">
-                    <Zap className="w-8 h-8 text-accent mx-auto animate-spin mb-2" />
-                    <p className="text-muted-foreground">Loading your roadmap...</p>
-                  </div>
-                ) : roadmap ? (
-                  <div className="p-4 bg-card border border-border rounded-lg">
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="font-semibold text-lg">
-                          {roadmap.company} - {roadmap.role}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {roadmap.timeline} day preparation • Level: {roadmap.level}
-                        </p>
-                      </div>
-                      <Badge>Active</Badge>
-                    </div>
-                    <div className="space-y-2 mb-4">
-                      <div className="flex justify-between text-sm">
-                        <span>Progress</span>
-                        <span className="font-semibold">35%</span>
-                      </div>
-                      <div className="w-full bg-muted rounded-full h-2">
-                        <div
-                          className="bg-accent h-2 rounded-full"
-                          style={{ width: "35%" }}
-                        />
-                      </div>
-                    </div>
-                    <Link href={`/roadmap/${roadmap.id}`}>
-                      <Button variant="outline" className="w-full">
-                        View Roadmap
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </Button>
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <p className="mb-4">No active roadmap yet. Create one to get started!</p>
-                    <Link href="/roadmap-generator">
-                      <Button>Generate Roadmap</Button>
-                    </Link>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Quick Actions */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent className="grid md:grid-cols-2 gap-4">
-                <Link href="/tracker">
-                  <Button variant="outline" className="w-full justify-start">
-                    📊 View Tracker
-                  </Button>
-                </Link>
-                <Link href="/analytics">
-                  <Button variant="outline" className="w-full justify-start">
-                    📈 View Analytics
-                  </Button>
-                </Link>
-                <Button variant="outline" className="w-full justify-start">
-                  🎤 Start Mock Interview
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  💡 Get AI Recommendations
-                </Button>
-              </CardContent>
-            </Card>
+      <main style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '60px 40px',
+      }}>
+        {loading ? (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '400px',
+          }}>
+            <div style={{ animation: 'spin 1s linear infinite' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                color: '#f43f5e',
+              }}>⚡</div>
+            </div>
           </div>
+        ) : roadmap ? (
+          <div>
+            <h2 style={{
+              fontSize: '32px',
+              fontWeight: 'bold',
+              marginBottom: '40px',
+              color: '#f1f5f9',
+            }}>
+              Your Roadmaps
+            </h2>
 
-          {/* Right Column */}
-          <div className="space-y-8">
-            {/* Today's Focus */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Today's Focus</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="p-3 bg-muted/50 rounded-lg border border-border">
-                  <p className="font-semibold text-sm mb-1">
-                    DSA Practice - Arrays
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    2 hours recommended
+            <div
+              style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                border: '1px solid rgba(148, 163, 184, 0.2)',
+                borderRadius: '12px',
+                padding: '30px',
+                backdropFilter: 'blur(10px)',
+                cursor: 'pointer',
+                transition: '0.3s',
+              }}
+              onClick={() => router.push(`/roadmap/${roadmap.id}`)}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = '#f43f5e';
+                el.style.background = 'rgba(244, 63, 94, 0.05)';
+                el.style.transform = 'translateY(-4px)';
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = 'rgba(148, 163, 184, 0.2)';
+                el.style.background = 'rgba(15, 23, 42, 0.8)';
+                el.style.transform = 'translateY(0)';
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                marginBottom: '20px',
+              }}>
+                <div>
+                  <h3 style={{
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                    marginBottom: '8px',
+                    color: '#f1f5f9',
+                  }}>
+                    {roadmap.company} - {roadmap.role}
+                  </h3>
+                  <p style={{
+                    fontSize: '16px',
+                    color: '#cbd5e1',
+                  }}>
+                    {roadmap.timeline} day preparation • Level: {roadmap.level}
                   </p>
                 </div>
-                <div className="p-3 bg-muted/50 rounded-lg border border-border">
-                  <p className="font-semibold text-sm mb-1">
-                    System Design - Caching
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    1.5 hours recommended
-                  </p>
+                <div style={{
+                  background: 'rgba(244, 63, 94, 0.1)',
+                  border: '1px solid rgba(244, 63, 94, 0.3)',
+                  borderRadius: '8px',
+                  padding: '8px 16px',
+                  color: '#f43f5e',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                }}>
+                  Active
                 </div>
-                <Button className="w-full">Start Session</Button>
-              </CardContent>
-            </Card>
+              </div>
 
-            {/* Streak Info */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">🔥 Streak</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-4">
-                  <p className="text-4xl font-bold text-accent mb-2">7</p>
-                  <p className="text-sm text-muted-foreground">
-                    days of consistent learning
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+              <button
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginTop: '20px',
+                  padding: '12px 24px',
+                  background: 'linear-gradient(135deg, #f43f5e, #ec4899)',
+                  border: 'none',
+                  borderRadius: '8px',
+                  color: 'white',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: '0.3s',
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push(`/roadmap/${roadmap.id}`);
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(244, 63, 94, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                View Roadmap
+                <ArrowRight style={{ width: '18px', height: '18px' }} />
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div style={{
+            textAlign: 'center',
+            padding: '80px 40px',
+          }}>
+            <h2 style={{
+              fontSize: '32px',
+              fontWeight: 'bold',
+              marginBottom: '16px',
+              color: '#f1f5f9',
+            }}>
+              No Roadmaps Yet
+            </h2>
+            <p style={{
+              fontSize: '18px',
+              color: '#cbd5e1',
+              marginBottom: '32px',
+            }}>
+              Create your first interview preparation roadmap to get started.
+            </p>
+            <button
+              onClick={() => router.push('/roadmap-generator')}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '14px 28px',
+                background: 'linear-gradient(135deg, #f43f5e, #ec4899)',
+                border: 'none',
+                borderRadius: '8px',
+                color: 'white',
+                fontWeight: '600',
+                fontSize: '16px',
+                cursor: 'pointer',
+                transition: '0.3s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 10px 25px rgba(244, 63, 94, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              <Plus style={{ width: '20px', height: '20px' }} />
+              Create Roadmap
+            </button>
+          </div>
+        )}
       </main>
+
+      <style>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }
