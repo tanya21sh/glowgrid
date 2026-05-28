@@ -2,41 +2,65 @@
 
 **Status: ✅ PRODUCTION READY**
 
-GlowGrid is a modern, full-stack web application that helps job seekers prepare for interviews with personalized roadmaps, progress tracking, and comprehensive learning resources.
+GlowGrid is a modern, full-stack web application that helps job seekers prepare for interviews with personalized roadmaps, interactive chatbot guidance, progress tracking, and comprehensive learning resources.
 
 ## ✨ What's Working
 
-✅ **Dynamic Landing Page** - Beautiful hero with pricing, features, and smooth animations  
+✅ **AI Chatbot Interface** - Interactive conversation-based roadmap generation  
+✅ **Smart Goal Collection** - Multi-turn chat collecting goals, pain points, distractions  
+✅ **Dynamic Landing Page** - Beautiful hero with pricing, features, smooth animations  
 ✅ **Dashboard** - Real-time stats, active roadmap display, quick actions  
-✅ **Roadmap Generator** - Create personalized preparation plans  
-✅ **Progress Tracker** - Track tasks with working checkbox toggle  
-✅ **Roadmap Details** - View complete roadmaps with progress bars  
-✅ **Task Management** - Create, update, and complete tasks with database persistence  
-✅ **Analytics** - Performance insights and statistics  
+✅ **Progress Tracker** - Advanced analytics with daily activity charts  
+✅ **Roadmap Details** - View complete roadmaps with progress bars and questions  
+✅ **Task Management** - Create, update, and complete tasks with persistence  
+✅ **Profile Settings** - Customizable user preferences and goals  
+✅ **Interview Questions** - 100+ company-specific questions by category  
 ✅ **Responsive Design** - Works perfectly on desktop, tablet, mobile  
-✅ **Theme System** - 6 beautiful theme options  
+✅ **Theme System** - Dark theme with glassmorphism effects  
 ✅ **All Navigation** - All tabs and links fully functional  
 
 ## 🎯 Live Features
 
 ### Authentication & Pages
-- `/` - Landing page with dynamic UI
-- `/dashboard` - User dashboard with real data
-- `/roadmap-generator` - AI-powered roadmap creation
-- `/roadmap/[id]` - Detailed roadmap view
-- `/tracker` - Task tracker with working toggles ✅
-- `/analytics` - Performance analytics
+- `/` - Landing page with dynamic UI and CTAs
+- `/dashboard` - User dashboard with roadmap management
+- `/roadmap-generator` - **NEW: AI chatbot interface** for personalized prep
+- `/roadmap/[id]` - Detailed roadmap with 16 pre-generated tasks
+- `/tracker` - **NEW: Enhanced tracker** with analytics & weekly charts
+- `/profile` - **NEW: User preferences** and goal settings
+- `/analytics` - Performance analytics dashboard
 - `/sign-in` - Login page (demo mode)
 - `/sign-up` - Registration page (demo mode)
 
 ### Core Functionality
-- **Task Toggle**: Click any task checkbox to mark complete/incomplete
-- **Real Database Updates**: Changes persist in SQLite database
-- **Live Stats**: Completion rates calculated in real-time
-- **Progress Bars**: Visual progress tracking
-- **Notifications**: Toast feedback on all actions
+- **Chatbot Roadmap Generator**: 7-step conversation collecting all needed info
+- **Smart Task Generation**: Auto-creates 16 tasks in 4 categories (DSA, System Design, CS Fundamentals, Behavioral)
+- **Task Toggle**: Click checkboxes to mark complete/incomplete with persistence
+- **Live Analytics**: Real-time completion tracking and progress visualization
+- **Weekly Activity**: Charts showing preparation trends over 7 days
+- **Category Breakdown**: Visual progress bars for each topic area
+- **Interview Questions**: 100+ real questions from Google, Microsoft, Amazon
+- **Notifications**: Toast feedback on all user actions
 - **Loading States**: Beautiful loading indicators
-- **Error Handling**: Graceful error messages
+- **Error Handling**: Graceful error messages and fallbacks
+
+## 💬 New AI Chatbot Experience
+
+The chatbot guides users through a natural 7-step conversation:
+
+1. **Company Target** - Which company are you interviewing for?
+2. **Role Selection** - What role are you targeting?
+3. **Goal Setting** - What interview prep goals do you have?
+4. **Pain Points** - What challenges worry you most?
+5. **Distractions** - What tends to derail your studying?
+6. **Timeline** - How much time do you have to prepare?
+7. **Skill Level** - Rate your current skill level
+
+Once collected, the system generates a personalized roadmap with:
+- 16 curated tasks across 4 categories
+- Time-based preparation schedule
+- Distraction mitigation strategies
+- Custom goals and pain point targets
 
 ## 🚀 Quick Start
 
