@@ -144,6 +144,10 @@ yarn dev
 
 Visit `http://localhost:3000` in your browser.
 
+## Changelog
+
+- 2026-05-29: Minor clarifications and quick commands added. Pushed to remote repository.
+
 ## Usage
 
 ### 1. Landing Page
