@@ -19,12 +19,6 @@ PrepPilot is a full-stack AI-powered interview preparation platform built with m
 
 ### Tech Stack
 
-- **Frontend**: Next.js 14, React 18, TypeScript, Tailwind CSS, Framer Motion, shadcn/ui
-- **Backend**: Next.js API Routes, Prisma ORM, PostgreSQL
-- **Authentication**: Clerk
-- **AI**: OpenAI API (GPT-4)
-- **State Management**: Zustand (hooks for now)
-- **Forms**: React Hook Form
 
 ## Prerequisites
 
@@ -146,43 +140,23 @@ Visit `http://localhost:3000` in your browser.
 
 ## Changelog
 
-- 2026-05-29: Minor clarifications and quick commands added. Pushed to remote repository.
 
 ## Usage
 
 ### 1. Landing Page
-- View at: http://localhost:3000
-- Sign up or sign in with Clerk
-- Explore features
 
 ### 2. Generate Roadmap
-- Navigate to: http://localhost:3000/roadmap-generator
-- Fill form with:
   - Target Company (e.g., Google)
   - Target Role (e.g., Software Engineer)
   - Timeline (15, 30, 60 days)
   - Current Level (Beginner, Intermediate, Advanced)
   - Optional: Job Description
-- Click "Generate Roadmap"
-- AI generates personalized roadmap
 
 ### 3. Track Progress
-- Navigate to: http://localhost:3000/tracker
-- View daily tasks
-- Mark tasks as completed
-- Log study hours
 
 ### 4. View Analytics
-- Navigate to: http://localhost:3000/analytics
-- See study statistics
-- Track performance trends
-- Identify weak areas
 
 ### 5. Dashboard
-- Navigate to: http://localhost:3000/dashboard
-- Get overview of progress
-- See quick statistics
-- Access quick actions
 
 ## Project Structure
 
@@ -224,67 +198,20 @@ preppilot/
 ## Database Schema
 
 ### User
-- Managed by Clerk (no custom User table)
-- Stores authentication data
 
 ### Roadmap
 ```prisma
-- id: String (primary key)
-- userId: String (Clerk user ID)
-- company: String
-- role: String
-- timeline: String
-- level: UserLevel
-- jdSummary: String (optional)
-- dsaRoadmap, systemDesignRoadmap, etc.
-- generatedContent: JSON
-- isActive: Boolean
-- isArchived: Boolean
-- tasks: RoadmapTask[]
-- milestones: Milestone[]
-- createdAt: DateTime
-- updatedAt: DateTime
 ```
 
 ### RoadmapTask
 ```prisma
-- id: String (primary key)
-- roadmapId: String (foreign key)
-- title: String
-- description: String
-- category: Category (DSA, SystemDesign, etc.)
-- subcategory: String
-- difficulty: Difficulty (easy, medium, hard)
-- estimatedTime: Int (minutes)
-- completed: Boolean
-- completedAt: DateTime
-- notes: String
-- order: Int
 ```
 
 ### DailyProgress
 ```prisma
-- id: String (primary key)
-- userId: String
-- date: DateTime
-- studyHours: Float
-- problemsSolved: Int
-- mockInterviews: Int
-- revisionSessions: Int
-- tasksCompleted: Int
-- currentStreak: Int
-- notes: String
-- mood: String
 ```
 
 ### Other Models
-- Milestone: Weekly milestones
-- Achievement: Badges and unlocked achievements
-- WeakTopic: Topics with low performance
-- MockInterview: Mock interview history
-- StudyNote: User's personal notes
-- Resource: Learning resources
-- Analytics: User analytics summary
 
 ## API Reference
 
@@ -379,19 +306,10 @@ All support Node.js and PostgreSQL. Follow their documentation.
 ```
 Error: connect ECONNREFUSED
 ```
-- Ensure PostgreSQL is running
-- Check DATABASE_URL is correct
-- Run: `npx prisma db push`
 
 ### Clerk Not Working
-- Verify CLERK_PUBLISHABLE_KEY and SECRET_KEY
-- Check Clerk dashboard for API key expiration
-- Ensure redirect URLs are configured
 
 ### OpenAI API Error
-- Verify API key is correct
-- Check if you have credits in OpenAI account
-- Verify account is not rate limited
 
 ### Build Errors
 ```bash
@@ -435,8 +353,9 @@ For issues or questions:
 2. Review documentation
 3. Create a new issue with details
 
----
 
 **Happy Coding! 🚀**
 
 PrepPilot - Your Path to Success
+---
+Last updated: 2026-05-31 — committed automatically.
