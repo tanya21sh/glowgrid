@@ -21,3 +21,6 @@ All notable changes to this project will be documented in this file.
 - Daily autocommit: added changelog entry and pushed docs updates
 - Updated `SETUP_GUIDE.md` and `CHANGELOG.md` (2026-05-31 / 2026-06-01)
 
+## [2026-06-02]
+- Daily autocommit: minor docs update and pushed to remote
+
